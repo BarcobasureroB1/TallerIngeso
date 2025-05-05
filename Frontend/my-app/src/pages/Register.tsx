@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRegister } from '../hooks/useRegister';
 
 export const Register = () => { //Hooks
-  const [name, setName] = useState('');
+  const [rut, setRut] = useState('');
   const [email,setEmail] = useState('');
   const [password,setPassword] = useState('');
   const [errorMsg,setErrorMsg] = useState('');
@@ -20,16 +20,16 @@ export const Register = () => { //Hooks
   const enviar = (e: SyntheticEvent) => {
     e.preventDefault();
     setErrorMsg('');
-    register.mutate({name,email,password});
+    register.mutate({rut,email,password});
   };
 
   return (
     <div>
         <h1>Registro</h1>
         <form onSubmit={enviar}>
-            <label>Ingrese su nombre</label>
-            <input type = "username" name = "username" placeholder = 'Ingrese su nombre de usuario...' required value={name}
-              onChange={e => setName(e.target.value)}
+            <label>Ingrese su Rut: </label>
+            <input type = "text" name = "rut" placeholder = 'Ingrese su Rut...' required value={rut}
+              onChange={e => setRut(e.target.value)}
             />
 
             <label>Correo Electronico: </label>
