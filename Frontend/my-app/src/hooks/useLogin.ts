@@ -10,8 +10,8 @@ interface Logindata {
 interface Loginresponse {
     token: string;
     user: {
-        Email: string;
         Rut: string;
+        Email: string;
     };
 }
 
