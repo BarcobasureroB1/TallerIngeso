@@ -31,7 +31,7 @@ export class AuthService {
         if (!isPasswordValid) {
             throw new UnauthorizedException("credenciales invalidas")// Return a message if the password is invalid
         }
-        const payload = { rut: user.rut, correo: user.correo }; // Create a payload with the user's information
+        const payload = { rut: user.rut, correo: user.correo, saldo: user.saldo }; // Create a payload with the user's information
         const token = await this.jwtService.signAsync(payload); // Generate a JWT token with the payload
 
         return token;

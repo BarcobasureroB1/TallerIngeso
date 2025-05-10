@@ -11,8 +11,11 @@ export const Login = () => {
   const navigate = useNavigate();
 
   const login = useLogin((token) => {
+    
     setToken(token);
+    console.log(setToken(token));
     navigate('/Home');
+    
   },
   (error)=>{
     setErrorMsg(error);

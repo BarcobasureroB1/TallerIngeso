@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
 
 export const Home = () => {
+    console.log("Home");
     const {token, setToken} = useAuth();
     const navigate = useNavigate();
     const { data: user, isLoading: cargauser, isError} = useUserProfile();
@@ -11,6 +12,7 @@ export const Home = () => {
 
     if(!token)
     {
+        
         navigate('/Login');
         return null;
     }
