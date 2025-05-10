@@ -10,7 +10,7 @@ export const Register = () => { //Hooks
   const navigate = useNavigate();
 
   const register = useRegister(() => {
-    navigate('/Login');
+    navigate('api/v1/auth/Login');
     },
     (error) => {
       setErrorMsg(error);
