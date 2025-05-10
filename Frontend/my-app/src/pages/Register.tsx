@@ -4,13 +4,13 @@ import { useRegister } from '../hooks/useRegister';
 
 export const Register = () => { //Hooks
   const [rut, setRut] = useState('');
-  const [email,setEmail] = useState('');
+  const [correo,setCorreo] = useState('');
   const [password,setPassword] = useState('');
   const [errorMsg,setErrorMsg] = useState('');
   const navigate = useNavigate();
 
   const register = useRegister(() => {
-    navigate('/Login');
+    navigate('api/v1/auth/Login');
     },
     (error) => {
       setErrorMsg(error);
@@ -20,7 +20,7 @@ export const Register = () => { //Hooks
   const enviar = (e: SyntheticEvent) => {
     e.preventDefault();
     setErrorMsg('');
-    register.mutate({rut,email,password});
+    register.mutate({rut,correo,password});
   };
 
   return (
@@ -33,8 +33,8 @@ export const Register = () => { //Hooks
             />
 
             <label>Correo Electronico: </label>
-            <input type = "email" name = "email" placeholder = 'Ingrese un correo electronico porfavor...' required value={email}
-              onChange={e => setEmail(e.target.value)}
+            <input type = "email" name = "email" placeholder = 'Ingrese un correo electronico porfavor...' required value={correo}
+              onChange={e => setCorreo(e.target.value)}
 
             />
             <label>Contraseña: </label>
