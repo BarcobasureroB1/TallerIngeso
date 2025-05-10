@@ -36,7 +36,7 @@ export const Home = () => {
 
     return (
     <div> 
-        <h2> Bienvenido: {user?.Rut}, tu correo es: {user?.Email} </h2>
+        <h2> Bienvenido: {user?.rut}, tu correo es: {user?.email} </h2>
         <button onClick={()=> navigate('/Register')}>Ir a Registrarse</button>
         <button onClick={logout}>Cerrar la sesion 🤑</button>
     </div>

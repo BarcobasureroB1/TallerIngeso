@@ -8,7 +8,7 @@ export function useUserProfile(){
         queryFn: async () => {
             const respuesta = await api.get('/auth/profile');
             console.log("datos de respuesta del perfil pa visualizar: ", respuesta.data);
-            return respuesta.data.user;
+            return respuesta.data;
         },
     });
 }
