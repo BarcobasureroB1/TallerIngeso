@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
 
 export const Home = () => {
+    console.log("Home");
     const {token, setToken} = useAuth();
     const navigate = useNavigate();
     const { data: user, isLoading: cargauser, isError} = useUserProfile();
@@ -11,6 +12,7 @@ export const Home = () => {
 
     if(!token)
     {
+        
         navigate('/Login');
         return null;
     }
@@ -36,9 +38,8 @@ export const Home = () => {
 
     return (
     <div> 
-        <h2> Bienvenido: {user?.Rut}, tu correo es: {user?.Email} </h2>
-        <button onClick={()=> navigate('/Producto')}>Ir a los productos</button>
-        <button onClick={()=> navigate('/AdminDashboard')}>Ir a Administracion</button>
+        <h2> Bienvenido: {user?.rut}, tu correo es: {user?.email} </h2>
+        <button onClick={()=> navigate('/Register')}>Ir a Registrarse</button>
         <button onClick={logout}>Cerrar la sesion 🤑</button>
     </div>
     );
