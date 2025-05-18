@@ -34,7 +34,7 @@ export function useReservas(rutUser: string) {     //pa listar las reservas
     });
 }
 
-export function useReservasGenerales() {     //pa listar las reservas
+export function useReservasGenerales() {     //pa listar TODAS las reservas
     return useQuery({
         queryKey: ['reserva'],
         queryFn: async () => {
