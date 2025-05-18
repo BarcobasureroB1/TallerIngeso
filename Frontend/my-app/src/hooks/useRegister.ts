@@ -24,7 +24,7 @@ export function useRegister(onSuccess: () => void, onFail:(error:string)=>void) 
             onSuccess();
         },
         onError:(error) => {
-            const mensaje = (error.response?.data as {message?: string})?.message || 'no se pudo identificar el error xd';
+            const mensaje = (error.response?.data as {message?: string})?.message || 'no se pudo identificar el error...';
             onFail(mensaje);
         }
     })
