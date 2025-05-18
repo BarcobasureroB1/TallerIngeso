@@ -45,7 +45,7 @@ export const Reserva = () =>
                                 </>
                             )}
                             
-                            <button onClick={() => eliminarReser.mutate(p.id_reserva)}> Eliminar</button>
+                            <button onClick={() => eliminarReser.mutate(p.id_reserva)}>Cancelar Reserva</button>
                         </li>
                     ))}
                 </ul>
