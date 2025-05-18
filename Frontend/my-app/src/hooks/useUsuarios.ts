@@ -4,7 +4,7 @@ import { AxiosError } from 'axios';
 import { error } from 'console';
 
 
-export function agregarSaldo(){   
+export function useAgregarSaldo(){   
     const clienteQuery = useQueryClient();
     return useMutation({
         mutationFn: async (salgoAgregado: number) => {

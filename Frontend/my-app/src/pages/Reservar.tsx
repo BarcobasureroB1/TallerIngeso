@@ -2,15 +2,15 @@ import React, {SyntheticEvent, useState} from 'react'
 import { useUserProfile } from '../hooks/useUserProfile';
 import {useNavigate} from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
-import { useReservasGenerales,crearReserva } from '../hooks/useReservas';
-import {agregarSaldo} from '../hooks/useUsuarios';
+import { useReservasGenerales,useCrearReserva } from '../hooks/useReservas';
+import {useAgregarSaldo} from '../hooks/useUsuarios';
 
 export const Reservar = () => {
     const {token, setToken} = useAuth();
     const navigate = useNavigate();
     const {data: user, isLoading: cargauser, isError} = useUserProfile();
     const {data: reservas,isLoading: cargaReserva} = useReservasGenerales();
-    const crearReserv = crearReserva();
+    const crearReserv = useCrearReserva();
     const [rut_cliente, setRut] = useState('');
     const [fecha,setFecha] = useState('');
     const [hora_inicio, setHoraInicio] = useState('');
@@ -48,6 +48,7 @@ export const Reservar = () => {
 
     return (
     <div> 
+        
         <h2> Bienvenido: {user?.rut}, tu saldo actual es: ${user?.saldo} </h2>
         
 

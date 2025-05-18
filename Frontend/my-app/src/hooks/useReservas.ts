@@ -44,7 +44,7 @@ export function useReservasGenerales() {     //pa listar TODAS las reservas
     });
 }
 
-export function crearReserva (){ 
+export function useCrearReserva (){ 
     const clienteQuery = useQueryClient();
     return useMutation({
         mutationFn: async ({rut_cliente, fecha, hora_inicio, hora_fin, id_cancha, boleta_equipamiento}:ReservaData) => {
@@ -57,7 +57,7 @@ export function crearReserva (){
     });
 }
 
-export function eliminarReserva(){   
+export function useEliminarReserva(){   
     const clienteQuery = useQueryClient();
     return useMutation({
         mutationFn: async (id_reserva: number) => {
