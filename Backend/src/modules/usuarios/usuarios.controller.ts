@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
 import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { AuthGuard } from '../auth/guard/auth.guard';
+import { AgregarSaldoDto } from './dto/agregar-saldo.dto';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -31,4 +33,10 @@ export class UsuariosController {
   remove(@Param('rut') rut: string) {
     return this.usuariosService.remove(rut);
   }
+ @Post('agregar-saldo')
+ @UseGuards(AuthGuard) 
+ agregarSaldo(@Request() req, @Body() dto: AgregarSaldoDto) {
+  const rut = req.user.rut;
+  return this.usuariosService.agregarSaldo(rut, dto);
+}
 }

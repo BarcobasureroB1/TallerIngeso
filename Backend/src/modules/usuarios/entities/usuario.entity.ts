@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Reserva } from 'src/modules/reserva/entities/reserva.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 @Entity()
 export class Usuario {
     //@PrimaryGeneratedColumn()
@@ -12,6 +13,8 @@ export class Usuario {
     saldo: number;
     @Column({ default: false })
     admin: boolean;
+    @OneToMany(() => Reserva, (reserva) => reserva.cliente)
+    reservas: Reserva[];
 
 }
 
