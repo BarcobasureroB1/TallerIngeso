@@ -32,4 +32,13 @@ export class EquipamentoService {
     return `This action removes a #${id} equipamento`;
   }
   async anadirStock(añadirStockDto: AñadirStockDto) {
+    const equipamento = await this.equipamentoRepository.findOneBy({
+      nombre: añadirStockDto.nombre,
+    });
+    if (!equipamento) {
+      throw new Error('Equipamiento no encontrado');
+    }
+    equipamento.stock += añadirStockDto.stock;
+    return await this.equipamentoRepository.save(equipamento);
+  }
 }

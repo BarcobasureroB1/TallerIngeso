@@ -26,23 +26,29 @@ export class ReservaService {
  async crearReserva(dto: CreateReservaDto) {
   const cliente = await this.usuarioRepository.findOneBy({ rut: dto.rut_cliente });
   const cancha = await this.canchaRepository.findOneBy({ id_cancha: dto.id_cancha });
-  const boleta = await this.boletaRepository.findOneBy({ numero_boleta: dto.boleta_equipamiento });
-
-  if (!cliente || !cancha) {
-    throw new Error('Cliente o cancha no encontrados');
+  
+  if (!cliente) {
+    throw new Error('Cliente no encontrado');
   }
-  if (!boleta) {
-  throw new Error('Boleta no encontrada');
-}
+  if (!cancha) {
+    throw new Error('Cancha no encontrada');
+  }
+  
+  let boleta: Boleta | null = null;
 
-  const reserva = new Reserva();
-  reserva.cliente = cliente;
-  reserva.fecha = dto.fecha;
-  reserva.hora_inicio = dto.hora_inicio;
-  reserva.hora_fin = dto.hora_fin;
-  reserva.cancha = cancha;
-  reserva.equipamiento = dto.equipamiento;
-  reserva.boletaEquipamiento = boleta;
+  if (dto.numero_boleta) {
+    boleta = await this.boletaRepository.findOneBy({ numero_boleta: dto.numero_boleta });
+  }
+
+  const reserva = this.reservaRepository.create({
+    cliente,
+    fecha: dto.fecha,
+    hora_inicio: dto.hora_inicio,
+    hora_fin: dto.hora_fin,
+    cancha,
+    equipamiento: dto.equipamiento,
+    boletaEquipamiento: boleta,
+  });
 
   return await this.reservaRepository.save(reserva);
 }
@@ -52,7 +58,7 @@ export class ReservaService {
   }
 
   async findOne(id: number) {
-    return await this.reservaRepository.findOneBy({ id_reserva: id });
+    return await this.reservaRepository.findBy({ id_reserva: id });
   }
 
   update(id: number, updateReservaDto: UpdateReservaDto) {

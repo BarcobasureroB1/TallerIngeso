@@ -31,4 +31,9 @@ export class BoletasService {
   remove(id: number) {
     return `This action removes a #${id} boleta`;
   }
+  async crearBoleta(): Promise<Boleta> {
+    const boleta = this.boletasRepository.create(); // se crea vacía
+    return await this.boletasRepository.save(boleta); // se guarda, y se genera el número
+  }
+  
 }
