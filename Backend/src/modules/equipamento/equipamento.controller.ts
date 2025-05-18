@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete,  } from '@nestjs/common';
 import { EquipamentoService } from './equipamento.service';
 import { CreateEquipamentoDto } from './dto/create-equipamento.dto';
 import { UpdateEquipamentoDto } from './dto/update-equipamento.dto';
+import { AñadirStockDto } from './dto/añadir-stock.dto';
 
 @Controller('equipamento')
 export class EquipamentoController {
@@ -16,19 +17,9 @@ export class EquipamentoController {
   findAll() {
     return this.equipamentoService.findAll();
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.equipamentoService.findOne(+id);
+  @Patch('stock')
+  async updateStock(@Body() dto: AñadirStockDto ) {
+    return await this.equipamentoService.anadirStock(dto);
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEquipamentoDto: UpdateEquipamentoDto) {
-    return this.equipamentoService.update(+id, updateEquipamentoDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.equipamentoService.remove(+id);
-  }
+ 
 }

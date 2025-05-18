@@ -19,11 +19,8 @@ export class CreateReservaDto {
   @IsBoolean()
   equipamiento: boolean;
 
-  // Si se pide equipamiento, se envía la lista
-  lista_equipamiento?: {
-    nombre: string;
-    cantidad: number;
-  }[];
-
+  @IsNumber()
+  numero_boleta?: number; 
+  
 
 }

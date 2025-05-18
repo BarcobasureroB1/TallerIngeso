@@ -9,25 +9,6 @@ export class BoletasController {
 
   
 
-  @Get()
-  findAll() {
-    return this.boletasService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.boletasService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBoletaDto: UpdateBoletaDto) {
-    return this.boletasService.update(+id, updateBoletaDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.boletasService.remove(+id);
-  }
   @Post()
   async crear() {
     return await this.boletasService.crearBoleta();
