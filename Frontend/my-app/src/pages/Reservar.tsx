@@ -3,7 +3,7 @@ import { useUserProfile } from '../hooks/useUserProfile';
 import {useNavigate} from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
 import { useReservasGenerales,crearReserva } from '../hooks/useReservas';
-
+import {agregarSaldo} from '../hooks/useUsuarios';
 
 export const Reservar = () => {
     const {token, setToken} = useAuth();
@@ -49,7 +49,7 @@ export const Reservar = () => {
     return (
     <div> 
         <h2> Bienvenido: {user?.rut}, tu saldo actual es: ${user?.saldo} </h2>
-
+        
 
         <button onClick={()=> navigate('/ReservasUsuario')}>Ver tus reservas</button>
         
