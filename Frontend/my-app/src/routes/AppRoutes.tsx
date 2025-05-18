@@ -3,7 +3,8 @@ import {Login} from '../pages/Login';
 import {Register} from '../pages/Register';
 import {Home} from '../pages/Home';
 import {PrivateRoute} from './PrivateRoute';
-import {Reserva} from '../pages/reservasHistorial';
+import {Reserva} from '../pages/ReservasUsuario';
+import { Reservar } from '../pages/Reservar';
 
 
 export const AppRoutes = () => {
@@ -12,7 +13,8 @@ export const AppRoutes = () => {
       <Route path = '/Login' element = {<Login/>}/>
       <Route path = '/Register' element = {<Register/>}/>
       <Route path='/Home'element = {<PrivateRoute> <Home/> </PrivateRoute>}/>
-      <Route path='/reservasHistorial'element = {<PrivateRoute> <Reserva/> </PrivateRoute>}/>
+      <Route path='/ReservasUsuario'element = {<PrivateRoute> <Reserva/> </PrivateRoute>}/>
+      <Route path='/Reservar'element = {<PrivateRoute> <Reservar/> </PrivateRoute>}/>
 
     </Routes>
   );

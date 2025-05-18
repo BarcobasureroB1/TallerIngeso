@@ -1,9 +1,8 @@
-import React from 'react';
 import { useUserProfile } from '../hooks/useUserProfile';
 import {useNavigate} from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
 
-export const Home = () => {
+export const Reservar = () => {
     const {token, setToken} = useAuth();
     const navigate = useNavigate();
     const { data: user, isLoading: cargauser, isError} = useUserProfile();
@@ -15,13 +14,6 @@ export const Home = () => {
         return null;
     }
     
-    const logout = () => {
-        setToken(null);
-        sessionStorage.removeItem('token');
-        navigate('/Login');
-    }
-
-
     if(cargauser)
     {
         return <div> Cargando... </div>;
@@ -30,19 +22,18 @@ export const Home = () => {
     if(isError)
     {
         setToken(null);
-        navigate('/login');
+        navigate('/Login');
         return null;
     }
 
     return (
     <div> 
-        <h2> Bienvenido: {user?.rut}, tu correo es: {user?.email} </h2>
-        <button onClick={()=> navigate('/Reservar')}>Reservar Canchas</button>
+        <h2> Bienvenido: {user?.rut}, tu saldo actual es: ${user?.saldo} </h2>
+
         <button onClick={()=> navigate('/ReservasUsuario')}>Ver tus reservas</button>
-        <button onClick={logout}>Cerrar la sesion 🤑</button>
+        
     </div>
     );
     
 };
 
-export default Home;
