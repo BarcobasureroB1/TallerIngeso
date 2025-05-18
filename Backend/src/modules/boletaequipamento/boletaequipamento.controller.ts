@@ -8,30 +8,7 @@ import { AgregarEquipamientoDto } from './dto/agregarequipamento.dto';
 export class BoletaequipamentoController {
   constructor(private readonly boletaequipamentoService: BoletaequipamentoService) {}
 
-  @Post()
-  create(@Body() createBoletaequipamentoDto: CreateBoletaequipamentoDto) {
-    return this.boletaequipamentoService.create(createBoletaequipamentoDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.boletaequipamentoService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.boletaequipamentoService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBoletaequipamentoDto: UpdateBoletaequipamentoDto) {
-    return this.boletaequipamentoService.update(+id, updateBoletaequipamentoDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.boletaequipamentoService.remove(+id);
-  }
+  
   @Get('total/:numeroBoleta')
 calcularTotal(@Param('numeroBoleta', ParseIntPipe) numeroBoleta: number) {
   return this.boletaequipamentoService.calcularTotalBoleta(numeroBoleta);
@@ -41,5 +18,5 @@ calcularTotal(@Param('numeroBoleta', ParseIntPipe) numeroBoleta: number) {
     return this.boletaequipamentoService.agregarEquipamientoABoleta(dto);
   }
 
-  
+
 }

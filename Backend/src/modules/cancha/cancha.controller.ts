@@ -17,18 +17,5 @@ export class CanchaController {
     return this.canchaService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.canchaService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCanchaDto: UpdateCanchaDto) {
-    return this.canchaService.update(+id, updateCanchaDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.canchaService.remove(+id);
-  }
+ 
 }
