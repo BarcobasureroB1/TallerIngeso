@@ -61,7 +61,7 @@ export function useEliminarReserva(){
     const clienteQuery = useQueryClient();
     return useMutation({
         mutationFn: async (id_reserva: number) => {
-            await api.patch(`api/v1/reserva`, id_reserva);
+            await api.patch(`api/v1/reserva/${id_reserva}`)
         },
         onSuccess: () => {
             clienteQuery.invalidateQueries({queryKey:['reserva']});
