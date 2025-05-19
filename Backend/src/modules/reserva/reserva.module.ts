@@ -8,9 +8,10 @@ import { Usuario } from '../usuarios/entities/usuario.entity';
 import { Equipamiento } from '../equipamento/entities/equipamento.entity';
 import { Cancha } from '../cancha/entities/cancha.entity';
 import { Boleta } from '../boletas/entities/boleta.entity';
+import { BoletaEquipamiento } from '../boletaequipamento/entities/boletaequipamento.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Reserva,Usuario,Equipamiento,Cancha,Boleta])],
+  imports: [TypeOrmModule.forFeature([Reserva,Usuario,Equipamiento,Cancha,Boleta,BoletaEquipamiento])],
   controllers: [ReservaController],
   providers: [ReservaService],
   exports: [ReservaService], // Export the service to be used in other modules

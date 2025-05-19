@@ -51,13 +51,19 @@ export class ReservaService {
 
   return await this.reservaRepository.save(reserva);
 }
-
- async findAll(): Promise<ReservaResponseDto[]> {
+async findAll() {
   const reservas = await this.reservaRepository.find({
-    relations: ['cliente', 'cancha'],
+    where: { cancelado: false },
+    relations: [
+    'cliente',
+    'cancha',
+    'boletaEquipamiento',
+    'boletaEquipamiento.relaciones',
+    'boletaEquipamiento.relaciones.equipamiento',
+    ],
   });
 
-  return reservas.map(reserva => ({
+  return reservas.map((reserva) => ({
     id_reserva: reserva.id_reserva,
     fecha: reserva.fecha,
     hora_inicio: reserva.hora_inicio,
@@ -69,7 +75,11 @@ export class ReservaService {
     cancha: {
       id_cancha: reserva.cancha.id_cancha,
       costo: reserva.cancha.costo,
-    }
+    },
+    equipamientoAsignado: reserva.boletaEquipamiento?.relaciones?.map(be => ({
+      nombre: be.equipamiento.nombre,
+      cantidad: be.cantidad,
+    })) || [],
   }));
 }
 
@@ -93,4 +103,5 @@ export class ReservaService {
   reserva.cancelado = true;
   return await this.reservaRepository.save(reserva);
 }
+
 }

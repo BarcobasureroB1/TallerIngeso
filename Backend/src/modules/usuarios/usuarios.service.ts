@@ -41,6 +41,7 @@ export class UsuariosService {
     const usuario = await this.usuarioRepository.findOneBy({
       rut
     });
+    console.log('Usuario encontrado:', usuario);
     if (!usuario) {
       throw new Error('Usuario no encontrado');
     }

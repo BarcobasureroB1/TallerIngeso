@@ -8,7 +8,7 @@ export function useAgregarSaldo(){
     const clienteQuery = useQueryClient();
     return useMutation({
         mutationFn: async (saldoAgregado: number) => {
-            await api.post(`api/v1/usuarios/agregar-saldo`, saldoAgregado);
+            await api.post(`api/v1/usuarios/agregar-saldo`, {saldo: saldoAgregado});	
         },
         onSuccess: () => {
             clienteQuery.invalidateQueries({queryKey:['usuarios']});

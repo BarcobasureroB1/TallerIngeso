@@ -34,9 +34,10 @@ export class UsuariosController {
     return this.usuariosService.remove(rut);
   }
  @Post('agregar-saldo')
- @UseGuards(AuthGuard) 
- agregarSaldo(@Request() req, @Body() dto: AgregarSaldoDto) {
-  const rut = req.user.rut;
+@UseGuards(AuthGuard)
+agregarSaldo(@Request() req, @Body() dto: AgregarSaldoDto) {
+  const rut = req.Usuario.rut;
+  console.log('Usuario desde el token:', rut);
   return this.usuariosService.agregarSaldo(rut, dto);
 }
 }
