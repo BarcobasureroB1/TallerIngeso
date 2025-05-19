@@ -19,8 +19,6 @@ export class CreateReservaDto {
   @IsBoolean()
   equipamiento: boolean;
 
-  @IsNumber()
-  numero_boleta?: number; 
   
 
 }

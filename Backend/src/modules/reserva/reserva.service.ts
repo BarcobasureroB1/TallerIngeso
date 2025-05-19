@@ -8,6 +8,7 @@ import { Cancha } from '../cancha/entities/cancha.entity';
 import { Equipamiento } from '../equipamento/entities/equipamento.entity';
 import { Usuario } from '../usuarios/entities/usuario.entity';
 import { Boleta } from '../boletas/entities/boleta.entity';
+import { ReservaResponseDto } from './dto/reserva-response.dto';
 
 @Injectable()
 export class ReservaService {
@@ -34,11 +35,9 @@ export class ReservaService {
     throw new Error('Cancha no encontrada');
   }
   
-  let boleta: Boleta | null = null;
-
-  if (dto.numero_boleta) {
-    boleta = await this.boletaRepository.findOneBy({ numero_boleta: dto.numero_boleta });
-  }
+  const boleta = this.boletaRepository.create()
+  await this.boletaRepository.save(boleta);
+  
 
   const reserva = this.reservaRepository.create({
     cliente,
@@ -53,9 +52,26 @@ export class ReservaService {
   return await this.reservaRepository.save(reserva);
 }
 
-  async findAll() {
-    return await this.reservaRepository.find();
-  }
+ async findAll(): Promise<ReservaResponseDto[]> {
+  const reservas = await this.reservaRepository.find({
+    relations: ['cliente', 'cancha'],
+  });
+
+  return reservas.map(reserva => ({
+    id_reserva: reserva.id_reserva,
+    fecha: reserva.fecha,
+    hora_inicio: reserva.hora_inicio,
+    hora_fin: reserva.hora_fin,
+    cliente: {
+      rut: reserva.cliente.rut,
+      correo: reserva.cliente.correo,
+    },
+    cancha: {
+      id_cancha: reserva.cancha.id_cancha,
+      costo: reserva.cancha.costo,
+    }
+  }));
+}
 
   async findOne(id: number) {
     return await this.reservaRepository.findBy({ id_reserva: id });
@@ -68,4 +84,13 @@ export class ReservaService {
   remove(id: number) {
     return `This action removes a #${id} reserva`;
   }
+  async cancelar(id: number) {
+  const reserva = await this.reservaRepository.findOneBy({ id_reserva: id });
+  if (!reserva) {
+    throw new Error('Reserva no encontrada');
+  }
+
+  reserva.cancelado = true;
+  return await this.reservaRepository.save(reserva);
+}
 }
