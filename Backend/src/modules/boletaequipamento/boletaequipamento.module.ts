@@ -5,10 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BoletaEquipamiento } from './entities/boletaequipamento.entity';
 import { BoletasModule } from '../boletas/boletas.module';
 import { EquipamentoModule } from '../equipamento/equipamento.module';
+import { ReservaModule } from '../reserva/reserva.module';
+import { UsuariosModule } from '../usuarios/usuarios.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([BoletaEquipamiento]),
-  BoletasModule, EquipamentoModule], // Add the entities you want to use with TypeORM here
+  BoletasModule, EquipamentoModule,ReservaModule,UsuariosModule], // Add the entities you want to use with TypeORM here
   controllers: [BoletaequipamentoController],
   providers: [BoletaequipamentoService],
 })

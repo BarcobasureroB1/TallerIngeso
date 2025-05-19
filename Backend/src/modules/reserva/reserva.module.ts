@@ -14,6 +14,6 @@ import { BoletaEquipamiento } from '../boletaequipamento/entities/boletaequipame
   imports: [TypeOrmModule.forFeature([Reserva,Usuario,Equipamiento,Cancha,Boleta,BoletaEquipamiento])],
   controllers: [ReservaController],
   providers: [ReservaService],
-  exports: [ReservaService], // Export the service to be used in other modules
+  exports: [ReservaService,TypeOrmModule], // Export the service to be used in other modules
 })
 export class ReservaModule {}

@@ -34,7 +34,13 @@ export class ReservaService {
   if (!cancha) {
     throw new Error('Cancha no encontrada');
   }
-  
+  const costoreserva = cancha.costo;
+  if(cliente.saldo < costoreserva){
+    throw new Error(`Saldo insuficiente. Se requieren $${costoreserva}, pero tienes $${cliente.saldo}`);
+  }
+  cliente.saldo -= costoreserva;
+  await this.usuarioRepository.save(cliente);
+
   const boleta = this.boletaRepository.create()
   await this.boletaRepository.save(boleta);
   

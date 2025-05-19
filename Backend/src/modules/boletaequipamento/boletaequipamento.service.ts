@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateBoletaequipamentoDto } from './dto/create-boletaequipamento.dto';
 import { UpdateBoletaequipamentoDto } from './dto/update-boletaequipamento.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,6 +6,8 @@ import { BoletaEquipamiento } from './entities/boletaequipamento.entity';
 import { Repository } from 'typeorm';
 import { Boleta } from '../boletas/entities/boleta.entity';
 import { Equipamiento } from '../equipamento/entities/equipamento.entity';
+import { Reserva } from '../reserva/entities/reserva.entity';
+import { Usuario } from '../usuarios/entities/usuario.entity';
 @Injectable()
 export class BoletaequipamentoService {
   constructor(
@@ -15,6 +17,10 @@ export class BoletaequipamentoService {
     private readonly boletaRepository: Repository<Boleta>,
     @InjectRepository(Equipamiento)
     private readonly equipamientoRepository: Repository<Equipamiento>,
+    @InjectRepository(Reserva)
+    private readonly reservaRepository: Repository<Reserva>,
+    @InjectRepository(Usuario)
+    private readonly usuarioRepository: Repository<Usuario>,
   ) {}
   create(createBoletaequipamentoDto: CreateBoletaequipamentoDto) {
     return 'This action adds a new boletaequipamento';
@@ -66,6 +72,22 @@ async agregarEquipamientoABoleta(dto: { numero_boleta: number, nombre_equipamien
   if (!equipamiento) {
     throw new Error('Equipamiento no encontrado');
   }
+  const reserva = await this.reservaRepository.findOne({
+    where: { boletaEquipamiento: { numero_boleta: dto.numero_boleta } },
+    relations: ['cliente'],
+  });
+
+  if (!reserva || !reserva.cliente) {
+    throw new Error('Reserva o cliente no encontrado');
+  }
+  const cliente = reserva.cliente;
+  const costoTotal = equipamiento.costo * dto.cantidad;
+  if (cliente.saldo < costoTotal) {
+     throw new Error(`Saldo insuficiente. El costo es $${costoTotal}, pero tienes $${cliente.saldo}`);
+  }
+  cliente.saldo -= costoTotal;
+  await this.usuarioRepository.save(cliente);
+
 
   const relacion = this.boletaEquipamientoRepository.create({
     boleta,
