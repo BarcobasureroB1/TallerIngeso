@@ -10,7 +10,7 @@ interface ReservaData
     hora_inicio: string;
     hora_fin: string;
     id_cancha: number;
-    boleta_equipamiento: number;
+    equipamiento: boolean;
 }
 
 interface CancelarResponse
@@ -44,16 +44,20 @@ export function useReservasGenerales() {     //pa listar TODAS las reservas
     });
 }
 
-export function useCrearReserva (){ 
+export function useCrearReserva (onSuccess: () => void, onFail:(error:string)=>void){ 
     const clienteQuery = useQueryClient();
-    return useMutation({
-        mutationFn: async ({rut_cliente, fecha, hora_inicio, hora_fin, id_cancha, boleta_equipamiento}:ReservaData) => {
-            const respuesta = await api.post('api/v1/reserva',{rut_cliente, fecha, hora_inicio, hora_fin, id_cancha, boleta_equipamiento});
+    return useMutation<ReservarResponse,AxiosError,ReservaData>({
+        mutationFn: async ({rut_cliente, fecha, hora_inicio, hora_fin, id_cancha,equipamiento}:ReservaData): Promise<ReservarResponse>  => {
+            const respuesta = await api.post('api/v1/reserva',{rut_cliente, fecha, hora_inicio, hora_fin, id_cancha, equipamiento});
             return respuesta.data
         },
         onSuccess: () => {
             clienteQuery.invalidateQueries({queryKey:['reserva']});
-        }                           //revisar como mostrar el error de crear reservas
+        },
+        onError:(error) => {
+            const mensaje = (error.response?.data as {message?: string})?.message || 'no se pudo identificar el error...';
+            onFail(mensaje);
+        }                           
     });
 }
 
