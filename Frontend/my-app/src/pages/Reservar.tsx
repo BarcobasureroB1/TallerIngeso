@@ -21,10 +21,11 @@ export const Reservar = () => {
     const [saldoAgregado,setSaldo] = useState('');
     const agregarMonto = useAgregarSaldo();
 
-    const enviar = (e: SyntheticEvent) => {
+    const enviarSuma = (e: SyntheticEvent) => {
         e.preventDefault();
         agregarMonto.mutate(Number(saldoAgregado));
-      };
+        setSaldo('');
+    };
 
     /*const crear = (e: SyntheticEvent) => {
         e.preventDefault();
@@ -59,9 +60,16 @@ export const Reservar = () => {
         
         <h2> Bienvenido: {user?.rut}, tu saldo actual es: ${user?.saldo} </h2>
         
+        <h3>Agregar Saldo a tu cuenta: </h3>
+        <form onSubmit={enviarSuma}>
+
+            <input type = "number" placeholder='Ingresa dinero a agregar' value={saldoAgregado} onChange={(e)=> setSaldo(e.target.value)} required/>
+
+            <button type = "submit"> Agregar</button>
+        </form>
 
         <button onClick={()=> navigate('/ReservasUsuario')}>Ver tus reservas</button>
-        
+        <button onClick={()=> navigate('/Home')}>Volver a Home</button>
     </div>
     );
     
