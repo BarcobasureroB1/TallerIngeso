@@ -7,11 +7,11 @@ import { error } from 'console';
 export function useAgregarSaldo(){   
     const clienteQuery = useQueryClient();
     return useMutation({
-        mutationFn: async (salgoAgregado: number) => {
-            await api.post(`api/v1/usuarios/agregar-saldo`, salgoAgregado);
+        mutationFn: async (saldoAgregado: number) => {
+            await api.post(`api/v1/usuarios/agregar-saldo`, saldoAgregado);
         },
         onSuccess: () => {
-            clienteQuery.invalidateQueries({queryKey:['agregar-saldo']});
+            clienteQuery.invalidateQueries({queryKey:['usuarios']});
         }                            //revisar como mostrar el error de agregar saldo
     });
 
