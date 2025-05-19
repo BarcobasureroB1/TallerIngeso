@@ -1,1 +1,7 @@
-export class CreateBoletaequipamentoDto {}
+export class CreateBoletaequipamentoDto {
+
+
+
+
+    
+}

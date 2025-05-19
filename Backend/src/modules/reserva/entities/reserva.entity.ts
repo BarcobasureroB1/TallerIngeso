@@ -36,5 +36,6 @@ export class Reserva {
 
   @ManyToOne(() => Boleta, { nullable: true })
   @JoinColumn({ name: 'boleta_equipamiento' })
-  boletaEquipamiento: Boleta;
+  boletaEquipamiento: Boleta | null;
+  
 }
