@@ -1,5 +1,5 @@
 import React, {SyntheticEvent, useState} from 'react';
-import { useReservas, eliminarReserva } from '../hooks/useReservas';
+import { useReservas, useEliminarReserva } from '../hooks/useReservas';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useUserProfile } from '../hooks/useUserProfile';
@@ -8,7 +8,7 @@ export const Reserva = () =>
 {
     
     const {token, setToken} = useAuth();
-    const eliminarReser = eliminarReserva();
+    const eliminarReser = useEliminarReserva();
     const navigate = useNavigate();
     const {data: user, isLoading: cargauser, isError} = useUserProfile();
     const {data: reservas,isLoading: cargaReserva} = useReservas(user.rut);
