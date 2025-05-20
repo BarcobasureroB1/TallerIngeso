@@ -42,13 +42,13 @@ export const Reserva = () =>
                 <ul>
                     {reservas.map((p: any) => (
                         <li key = {p.id_reserva}>
-                            <p>Rut del cliente: </p> {p.rut}
+                            <p>Rut del cliente: </p> {p.cliente.rut}
                             <p>Fecha: </p> {p.fecha}
                             <p>Hora de inicio de la reserva - Hora final de la reserva: </p> {p.hora_inicio} - {p.hora_fin}
-                            <p>Cancha de la reserva: </p> {p.id_cancha}
+                            <p>Cancha de la reserva: </p> {p.cancha.id_cancha}
                             <p>Equipamiento de la reserva: </p>
 
-                            {p.equipamientos?.length > 0 ? (
+                            {p.equipamientoAsignado?.length > 0 ? (
                                 <ul>
                                     {p.equipamientos.map((e: any) => (
                                         <li key = {e.nombre}>
