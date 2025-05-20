@@ -17,9 +17,9 @@ export class ReservaController {
     return this.reservaService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reservaService.findOne(+id);
+  @Get(':rut')
+  findByRut(@Param('rut') rut: string) {
+    return this.reservaService.findByRut(rut);
   }
   @Patch(':id')
   async cancelarReserva(@Param('id', ParseIntPipe) id: number) {

@@ -55,7 +55,22 @@ export class ReservaService {
     boletaEquipamiento: boleta,
   });
 
-  return await this.reservaRepository.save(reserva);
+  const reservaGuardada = await this.reservaRepository.save(reserva);
+  return {
+  id_reserva: reservaGuardada.id_reserva,
+  fecha: reservaGuardada.fecha,
+  hora_inicio: reservaGuardada.hora_inicio,
+  hora_fin: reservaGuardada.hora_fin,
+  cliente: {
+    rut: cliente.rut,
+    correo: cliente.correo,
+  },
+  cancha: {
+    id_cancha: cancha.id_cancha,
+    costo: cancha.costo,
+  },
+  id_boleta: boleta.numero_boleta, // 👈 Aquí está el ID necesario para el frontend
+};
 }
 async findAll() {
   const reservas = await this.reservaRepository.find({
@@ -89,9 +104,40 @@ async findAll() {
   }));
 }
 
-  async findOne(id: number) {
-    return await this.reservaRepository.findBy({ id_reserva: id });
-  }
+  async findByRut(rut: string) {
+  const reservas = await this.reservaRepository.find({
+    where: {
+      cancelado: false,
+      cliente: { rut }, // filtrando por rut del cliente
+    },
+    relations: [
+      'cliente',
+      'cancha',
+      'boletaEquipamiento',
+      'boletaEquipamiento.relaciones',
+      'boletaEquipamiento.relaciones.equipamiento',
+    ],
+  });
+
+  return reservas.map((reserva) => ({
+    id_reserva: reserva.id_reserva,
+    fecha: reserva.fecha,
+    hora_inicio: reserva.hora_inicio,
+    hora_fin: reserva.hora_fin,
+    cliente: {
+      rut: reserva.cliente.rut,
+      correo: reserva.cliente.correo,
+    },
+    cancha: {
+      id_cancha: reserva.cancha.id_cancha,
+      costo: reserva.cancha.costo,
+    },
+    equipamientoAsignado: reserva.boletaEquipamiento?.relaciones?.map(be => ({
+      nombre: be.equipamiento.nombre,
+      cantidad: be.cantidad,
+    })) || [],
+  }));
+}
 
   update(id: number, updateReservaDto: UpdateReservaDto) {
     return `This action updates a #${id} reserva`;

@@ -8,4 +8,5 @@ export class ReservaResponseDto {
   hora_fin: string;
   cliente: ClienteReservaDto;
   cancha: CanchaReservaDto;
+  id_boleta: number;
 }
