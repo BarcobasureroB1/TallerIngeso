@@ -5,9 +5,24 @@ import { useAuth } from '../context/AuthContext';
 import { useReservasGenerales,useCrearReserva } from '../hooks/useReservas';
 import {useAgregarSaldo} from '../hooks/useUsuarios';
 import { useCanchas } from '../hooks/useCanchas';
-
+import { useEquipamiento } from '../hooks/useEquipamiento';
+import { useCrearBoleta } from '../hooks/useBoletas';
 
 export const Reservar = () => {
+    //GESTION DE DATOS PARA SELECCIONAR EQUIPAMIENTOS
+
+    const [idBoletaReserva, setIdBoletaReserva] = useState<number | null>(null);
+    const [equipamientosSeleccionados, setEquipamientosSeleccionados] = useState<{
+        nombre_equipamiento: string;
+        cantidad: number;
+    }[]>([]);
+
+    const [currentEquipamiento, setCurrentEquipamiento] = useState('');
+    const [currentCantidad, setCurrentCantidad] = useState(1);
+    const [mostrarFormEquipamiento, setMostrarFormEquipamiento] = useState(false);
+
+    //-------------------------------------------//
+
     //token y usuario
     const {token, setToken} = useAuth();
     const navigate = useNavigate();
@@ -16,16 +31,11 @@ export const Reservar = () => {
     //mostrar reservas y reservar
     const {data: reservas,isLoading: cargaReserva} = useReservasGenerales();
     const [errorMsg,setErrorMsg] = useState('');
-    const crearReserv = useCrearReserva(() => {
-    },
-    (error) => {
-      setErrorMsg(error);
-    });
-    
+    const [errormsg,seterrorMSG] = useState('');
     const [fechaA,setFecha] = useState('');
     const [hora_Inicio, setHoraInicio] = useState('');
     const [hora_Fin,setHoraFin] = useState('');
-    const [id_Cancha,setIDCancha] = useState('');
+    const [idCancha,setIDCancha] = useState('');
     const [equipamientoO,setEquipamiento] = useState(false);
     
     //añadir a Saldo
@@ -35,6 +45,8 @@ export const Reservar = () => {
     //mostrar canchas
     const {data: canchas,isLoading: cargaCanchas} = useCanchas();
 
+    //mostrar equipamiento
+    const {data: ListaEquipamiento, isLoading: cargaEquipamiento} = useEquipamiento();
 
     if(!token)
     {
@@ -59,12 +71,46 @@ export const Reservar = () => {
         return <div>Cargando canchas...</div>
     }
 
+    const crearReserv = useCrearReserva((data) => {
+        console.log('Reserva creada con la boleta: ', data.id_boleta);
+        if (equipamientoO) {
+            setMostrarFormEquipamiento(true);
+        }
+    },
+    (error) => {
+      setErrorMsg(error);
+    });
+
+    // Agregar equipamiento a una lista
+    const agregarEquipamiento = (e: SyntheticEvent) => {
+        e.preventDefault();
+        if (!currentEquipamiento) {
+            setErrorMsg('Seleccione un equipamiento');
+            return;
+        }
+        
+        setEquipamientosSeleccionados(prev => [
+            ...prev,
+            {
+                nombre_equipamiento: currentEquipamiento,
+                cantidad: currentCantidad
+            }
+        ]);
+        
+        setCurrentEquipamiento('');
+        setCurrentCantidad(1);
+    };
+
+
+
+    //Suma de saldo
     const enviarSuma = (e: SyntheticEvent) => {
         e.preventDefault();
         agregarMonto.mutate(Number(saldoAgregado));
         setSaldo('');
     };
 
+    //Crear reserva
     const crearRes = (e: SyntheticEvent) => {
         e.preventDefault();
         
@@ -73,7 +119,7 @@ export const Reservar = () => {
             return;
         }
 
-        crearReserv.mutate({rut_cliente: user.rut ,fecha: new Date(fechaA) ,hora_inicio: hora_Inicio ,hora_fin: hora_Fin,id_cancha: Number(id_Cancha),equipamiento: equipamientoO});
+        crearReserv.mutate({rut_cliente: user.rut ,fecha: new Date(fechaA) ,hora_inicio: hora_Inicio ,hora_fin: hora_Fin,iD_cancha: Number(idCancha),equipamiento: equipamientoO});
         setFecha('');
         setHoraInicio('');
         setHoraFin('');
@@ -81,6 +127,43 @@ export const Reservar = () => {
         setEquipamiento(false);
     };
     
+    //Crear Boleta
+    const crearBolet = useCrearBoleta(() => {
+        console.log('Boleta creada.');
+    },
+    (error) => {
+      seterrorMSG(error);
+    });
+
+    const [numeroBoleta,setnumBoleta] = useState('');
+    const [nombreEquip, setNombreequip] = useState('');
+    const [cantid,setCantidad] = useState('');
+
+
+    // Crear todas las boletas en orden
+    const crearBoletasEquipamiento = async () => {
+        if (!idBoletaReserva || equipamientosSeleccionados.length === 0) return;
+        
+        try {
+            
+            for (const equip of equipamientosSeleccionados) {
+                await crearBolet.mutateAsync({
+                    numero_boleta: idBoletaReserva,
+                    nombre_equipamiento: equip.nombre_equipamiento,
+                    cantidad: equip.cantidad
+                });
+            }
+            
+            //resetea estas cosas
+            setEquipamientosSeleccionados([]);
+            setMostrarFormEquipamiento(false);
+            setIdBoletaReserva(null);
+        } catch (error) {
+            setErrorMsg('Error al crear boletas de equipamiento');
+        }
+    };
+
+
     const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEquipamiento(e.target.checked);
     };
@@ -110,8 +193,8 @@ export const Reservar = () => {
                 {canchas?.length > 0 ? (
                 <ul>
                     {canchas.map((c: any) => (
-                        <li key = {c.id}>
-                            {c.id} -<p>Precio de Cancha: </p> ${c.costo} 
+                        <li key = {c.id_cancha}>
+                            {c.id_cancha} - <p>Precio de Cancha: </p> - ${c.costo} 
                             <p>---------------------------------------------------</p>
                         </li>
                     ))}
@@ -119,7 +202,7 @@ export const Reservar = () => {
                     ) : (<p> No hay productos</p>)
                 }
 
-                <input type="number" placeholder='ID Cancha' required value={id_Cancha} onChange={(e) => setIDCancha(e.target.value)} />
+                <input type="number" placeholder='ID Cancha' required value={idCancha} onChange={(e) => setIDCancha(e.target.value)} />
                 
                 <div>
                     <label>
@@ -134,9 +217,56 @@ export const Reservar = () => {
 
                 <button type="submit">Confirmar Reserva</button>
             </form>
+            
+            {/* FORMULARIO EQUIPAMENTO OPCIONAL*/}
+            {mostrarFormEquipamiento && idBoletaReserva && (
+                <div>
+                    <h3>SELECCIONE EQUIPAMIENTO</h3>
+                    <form onSubmit={agregarEquipamiento}>
+                        <select
+                            value={currentEquipamiento}
+                            onChange={(e) => setCurrentEquipamiento(e.target.value)}
+                            required
+                        >
+                            <option value="">Seleccione equipamiento</option>
+                            {ListaEquipamiento?.map((equip: any) => (
+                                <option key={equip.id_equipamiento} value={equip.nombre}>
+                                    {equip.nombre} (Disponibles: {equip.cantidad_disponible})
+                                </option>
+                            ))}
+                        </select>
+                        
+                        <input
+                            type="number"
+                            min="1"
+                            value={currentCantidad}
+                            onChange={(e) => setCurrentCantidad(Number(e.target.value))}
+                            required
+                        />
+                        
+                        <button type="submit">Agregar Equipamiento</button>
+                    </form>
+
+                    {/* SE MUESTRAN LOS EQUIPAMIENTOS SELECCIONADOS PARA CONFIRMAR*/}
+                    {equipamientosSeleccionados.length > 0 && (
+                        <div>
+                            <h4>Equipamiento seleccionado:</h4>
+                            <ul>
+                                {equipamientosSeleccionados.map((equip, index) => (
+                                    <li key={index}>
+                                        {equip.nombre_equipamiento} - Cantidad: {equip.cantidad}
+                                    </li>
+                                ))}
+                            </ul>
+                            <button onClick={crearBoletasEquipamiento}>
+                                Confirmar Equipamiento
+                            </button>
+                        </div>
+                    )}
+                </div>
+            )}
 
             {errorMsg && <div style={{ color: 'red' }}>{errorMsg}</div>}
-
 
         <button onClick={()=> navigate('/ReservasUsuario')}>Ver tus reservas</button>
         <button onClick={()=> navigate('/Home')}>Volver a Home</button>
