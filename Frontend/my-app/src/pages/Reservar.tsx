@@ -135,7 +135,6 @@ export const Reservar = () => {
         setHoraInicio('');
         setHoraFin('');
         setIDCancha('');
-        setEquipamiento(false);
     };
     
 
@@ -157,6 +156,7 @@ export const Reservar = () => {
             setEquipamientosSeleccionados([]);
             setMostrarFormEquipamiento(false);
             setIdBoletaReserva(null);
+            setEquipamiento(false);
         } catch (error) {
             setErrorMsg('Error al crear boletas de equipamiento');
         }
