@@ -5,6 +5,7 @@ import {Home} from '../pages/Home';
 import {PrivateRoute} from './PrivateRoute';
 import {Reserva} from '../pages/ReservasUsuario';
 import { Reservar } from '../pages/Reservar';
+import { HistorialReservas } from '../pages/reservasHistorial';
 
 
 export const AppRoutes = () => {
@@ -15,7 +16,7 @@ export const AppRoutes = () => {
       <Route path='/Home'element = {<PrivateRoute> <Home/> </PrivateRoute>}/>
       <Route path='/ReservasUsuario'element = {<PrivateRoute> <Reserva/> </PrivateRoute>}/>
       <Route path='/Reservar'element = {<PrivateRoute> <Reservar/> </PrivateRoute>}/>
-
+      <Route path='/reservasHistorial'element = {<PrivateRoute><HistorialReservas/></PrivateRoute>}/>
     </Routes>
   );
 };
