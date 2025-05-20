@@ -50,10 +50,10 @@ export const Reserva = () =>
 
                             {p.equipamientoAsignado?.length > 0 ? (
                                 <ul>
-                                    {p.equipamientos.map((e: any) => (
+                                    {p.equipamientoAsignado.map((e: any) => (
                                         <li key = {e.nombre}>
                                             <p></p> {e.nombre}
-                                            <p></p> {e.tipo}
+                                            <p></p> {e.cantidad}
                                         </li>
                                     ))}
                                 </ul>
