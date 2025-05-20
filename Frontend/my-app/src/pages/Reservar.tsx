@@ -129,7 +129,7 @@ export const Reservar = () => {
             return;
         }
 
-        crearReserv.mutate({rut_cliente: user.rut ,fecha: new Date(fechaA) ,hora_inicio: hora_Inicio ,hora_fin: hora_Fin,iD_cancha: Number(idCancha),equipamiento: equipamientoO});
+        crearReserv.mutate({rut_cliente: user.rut ,fecha: new Date(fechaA) ,hora_inicio: hora_Inicio ,hora_fin: hora_Fin,id_cancha: Number(idCancha),equipamiento: equipamientoO});
         setFecha('');
         setHoraInicio('');
         setHoraFin('');
@@ -182,9 +182,11 @@ export const Reservar = () => {
 
         <h3>COMPLETE LOS DATOS DE SU RESERVA: </h3>
             <form onSubmit={crearRes}>
-                
+                <p>Fecha, ejemplo: 2023-11-15</p>
                 <input type="date" placeholder='Fecha (ej: 2023-11-15)' required value={fechaA} onChange={(e) => setFecha(e.target.value)} />
+                <p>Hora de inicio de la reserva, ejemplo: 09:30</p>
                 <input type="time" placeholder='Hora inicio (ej: 09:30)' required value={hora_Inicio} onChange={(e) => setHoraInicio(e.target.value)} />
+                <p>Hora de finalizacion de la reserva, ejemplo: 14:45</p>
                 <input type="time" placeholder='Hora fin (ej: 14:45)' required value={hora_Fin} onChange={(e) => setHoraFin(e.target.value)} />
                 <h3>INGRESE UNA DE ESTAS CANCHAS: </h3>
 
