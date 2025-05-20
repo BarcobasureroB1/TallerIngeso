@@ -185,9 +185,9 @@ export const Reservar = () => {
         <h3>COMPLETE LOS DATOS DE SU RESERVA: </h3>
             <form onSubmit={crearRes}>
                 
-                <input type="date" placeholder='Fecha' required value={fechaA} onChange={(e) => setFecha(e.target.value)} />
-                <input type="time" placeholder='Hora inicio' required value={hora_Inicio} onChange={(e) => setHoraInicio(e.target.value)} />
-                <input type="time" placeholder='Hora fin' required value={hora_Fin} onChange={(e) => setHoraFin(e.target.value)} />
+                <input type="date" placeholder='Fecha (ej: 2023-11-15)' required value={fechaA} onChange={(e) => setFecha(e.target.value)} />
+                <input type="time" placeholder='Hora inicio (ej: 09:30)' required value={hora_Inicio} onChange={(e) => setHoraInicio(e.target.value)} />
+                <input type="time" placeholder='Hora fin (ej: 14:45)' required value={hora_Fin} onChange={(e) => setHoraFin(e.target.value)} />
                 <h3>INGRESE UNA DE ESTAS CANCHAS: </h3>
 
                 {canchas?.length > 0 ? (
