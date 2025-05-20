@@ -51,6 +51,7 @@ export const Reservar = () => {
     //Crear reserva
     const crearReserv = useCrearReserva((data) => {
         console.log('Reserva creada con la boleta: ', data.id_boleta);
+        setIdBoletaReserva(data.id_boleta);
         if (equipamientoO) {
             setMostrarFormEquipamiento(true);
         }
