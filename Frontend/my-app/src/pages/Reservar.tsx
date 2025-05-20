@@ -48,6 +48,25 @@ export const Reservar = () => {
     //mostrar equipamiento
     const {data: ListaEquipamiento, isLoading: cargaEquipamiento} = useEquipamiento();
 
+    //Crear reserva
+    const crearReserv = useCrearReserva((data) => {
+        console.log('Reserva creada con la boleta: ', data.id_boleta);
+        if (equipamientoO) {
+            setMostrarFormEquipamiento(true);
+        }
+    },
+    (error) => {
+      setErrorMsg(error);
+    });
+
+    //Crear Boleta
+    const crearBolet = useCrearBoleta(() => {
+        console.log('Boleta creada.');
+    },
+    (error) => {
+      seterrorMSG(error);
+    });
+
     if(!token)
     {
         navigate('/Login');
@@ -71,15 +90,6 @@ export const Reservar = () => {
         return <div>Cargando canchas...</div>
     }
 
-    const crearReserv = useCrearReserva((data) => {
-        console.log('Reserva creada con la boleta: ', data.id_boleta);
-        if (equipamientoO) {
-            setMostrarFormEquipamiento(true);
-        }
-    },
-    (error) => {
-      setErrorMsg(error);
-    });
 
     // Agregar equipamiento a una lista
     const agregarEquipamiento = (e: SyntheticEvent) => {
@@ -127,18 +137,6 @@ export const Reservar = () => {
         setEquipamiento(false);
     };
     
-    //Crear Boleta
-    const crearBolet = useCrearBoleta(() => {
-        console.log('Boleta creada.');
-    },
-    (error) => {
-      seterrorMSG(error);
-    });
-
-    const [numeroBoleta,setnumBoleta] = useState('');
-    const [nombreEquip, setNombreequip] = useState('');
-    const [cantid,setCantidad] = useState('');
-
 
     // Crear todas las boletas en orden
     const crearBoletasEquipamiento = async () => {
