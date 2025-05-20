@@ -19,7 +19,7 @@ export function useCrearBoleta (onSuccess: () => void, onFail:(error:string)=>vo
     const clienteQuery = useQueryClient();
     return useMutation<BoletaResponse,AxiosError,BoletaData>({
         mutationFn: async ({numero_boleta,nombre_equipamiento,cantidad}:BoletaData): Promise<BoletaResponse>  => {
-            const respuesta = await api.post('api/v1/boletas',{numero_boleta, nombre_equipamiento, cantidad});
+            const respuesta = await api.post('api/v1/boletaequipamento/agregar',{numero_boleta, nombre_equipamiento, cantidad});
             return respuesta.data
         },
         onSuccess: () => {
