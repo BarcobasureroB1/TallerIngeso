@@ -11,7 +11,8 @@ export const Reserva = () =>
     const eliminarReser = useEliminarReserva();
     const navigate = useNavigate();
     const {data: user, isLoading: cargauser, isError} = useUserProfile();
-    const {data: reservas,isLoading: cargaReserva} = useReservas(user.rut);
+    const fechaActual = new Date();
+    const {data: reservas,isLoading: cargaReserva} = useReservas(user.rut, fechaActual);
 
     if(!token)
     {
@@ -58,6 +59,20 @@ export const Reserva = () =>
                                     ))}
                                 </ul>
                             ) : (<p>No hay equipamiento.</p>)
+                            }
+                            <p>Jugadores: </p>
+                            {p.jugadores?.length > 0 ? (
+                                <ul>
+                                    {p.jugadores.map((j: any) => (
+                                        <li key = {j.nombres_jugador}>
+                                            <p>Nombres: </p> {j.nombres_jugador}
+                                            <p>Apellidos: </p> {j.apellidos_jugador}
+                                            <p>Rut: </p> {j.rut_jugador}
+                                            <p>Edad: </p> {j.edad_jugador}
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (<p>No hay jugadores.</p>)
                             }
                             
                             <button onClick={() => eliminarReser.mutate(p.id_reserva)}>Cancelar Reserva</button>

@@ -30,7 +30,6 @@ export const Reservar = () => {
     const {data: user, isLoading: cargauser, isError} = useUserProfile();
 
     //mostrar reservas y reservar
-    const {data: reservas,isLoading: cargaReserva} = useReservasGenerales();
     const [errorMsg,setErrorMsg] = useState('');
     const [errormsg,seterrorMSG] = useState('');
     const [fechaA,setFecha] = useState('');

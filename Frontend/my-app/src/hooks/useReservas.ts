@@ -27,11 +27,11 @@ interface ReservarResponse
 }
 
 
-export function useReservas(rutUser: string) {     //pa listar las reservas
+export function useReservas(rutUser: string, fecha: Date) {     //pa listar las reservas
     return useQuery({
         queryKey: ['reserva', rutUser],
         queryFn: async () => {
-            const respuesta = await api.get('api/v1/reserva',{params:{rut_cliente: rutUser}});
+            const respuesta = await api.get('api/v1/reserva',{params:{rut_cliente: rutUser, fecha: fecha}});
             return respuesta.data;
         }
     });
@@ -42,6 +42,16 @@ export function useReservasGenerales() {     //pa listar TODAS las reservas
         queryKey: ['reserva'],
         queryFn: async () => {
             const respuesta = await api.get('api/v1/reserva');
+            return respuesta.data;
+        }
+    });
+}
+
+export function useReservasVigentes(fechaActual: Date) {     //pa listar las reservas que estén después de la fecha actual.
+    return useQuery({
+        queryKey: ['reserva', fechaActual],
+        queryFn: async () => {
+            const respuesta = await api.get('api/v1/reserva',{params:{fecha: fechaActual}});
             return respuesta.data;
         }
     });
