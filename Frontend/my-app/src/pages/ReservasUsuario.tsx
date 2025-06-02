@@ -76,7 +76,7 @@ export const Reserva = () =>
         }
 
         modificarCancha.mutate(
-            { id_reserva: idReserva, id_cancha: nuevaCancha },
+            { id_reserva: idReserva, id_cancha: nuevaCancha, admin: user.admin },
             {
                 onError: (error: any) => {
                     setError(error.response?.data?.message || 'Error al modificar la cancha');
@@ -99,7 +99,8 @@ export const Reserva = () =>
                 id_reserva: idReserva, 
                 fecha: new Date(nuevaFecha),
                 hora_inicio: nuevaHoraInicio,
-                hora_fin: nuevaHoraFin
+                hora_fin: nuevaHoraFin,
+                admin: user.admin
             },
             {
                 onError: (error: any) => {
@@ -153,7 +154,7 @@ export const Reserva = () =>
                             
                             <div style={{ marginTop: '10px' }}>
                                     <button 
-                                        onClick={() => eliminarReser.mutate(p.id_reserva)}
+                                        onClick={() => eliminarReser.mutate(p.id_reserva, user.admin)}
                                         style={{ marginRight: '10px', padding: '5px 10px' }}
                                     >
                                         Cancelar Reserva
