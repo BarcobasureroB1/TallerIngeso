@@ -51,9 +51,23 @@ export const Home = () => {
 
     return (
     <div> 
-        <h3> Bienvenido: {user?.nombre}, tu correo es: {user?.email} </h3>
+        <h3> Bienvenido: {user?.nombre}</h3>
         <button onClick={()=> navigate('/Reservar')}>Reservar Canchas</button>
-        <button onClick={()=> navigate('/ReservasUsuario')}>Ver tus reservas</button>
+        {user.admin === false && (
+            <>
+                <button onClick={()=> navigate('/ReservasUsuario')}>Ver tus reservas</button>
+                <button onClick={()=> navigate('/Notificacion')}>Revisa tus notificaciones</button>
+            
+            </>
+        )}
+
+        {user.admin === true && (
+            <>
+                <button onClick={()=> navigate('/reservasHistorial')}>Ver historial de reservas</button>
+                <button onClick={()=> navigate('/Canchas')}>Gestionar canchas</button>
+                <button onClick={()=> navigate('/Equipamientos')}>Gestionar Equipamiento</button>
+            </>
+        )}
         <button onClick={logout}>Cerrar la sesion 🤑</button>
 
         <h2>Reservas tomadas:  </h2>

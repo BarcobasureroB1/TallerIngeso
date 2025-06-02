@@ -2,7 +2,7 @@ import React, {SyntheticEvent, useState} from 'react'
 import { useUserProfile } from '../hooks/useUserProfile';
 import {useNavigate} from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
-import { useReservasGenerales,useCrearReserva } from '../hooks/useReservas';
+import { useCrearReserva } from '../hooks/useReservas';
 import {useAgregarSaldo} from '../hooks/useUsuarios';
 import { useCanchas } from '../hooks/useCanchas';
 import { useEquipamiento } from '../hooks/useEquipamiento';
@@ -150,7 +150,7 @@ export const Reservar = () => {
             return;
         }
 
-        crearReserv.mutate({rut_cliente: user.rut ,fecha: new Date(fechaA) ,hora_inicio: hora_Inicio ,hora_fin: hora_Fin,id_cancha: Number(idCancha),equipamiento: equipamientoO,cantidad_jugadores: Number(cantidad)});
+        crearReserv.mutate({rut_cliente: user.rut ,fecha: new Date(fechaA) ,hora_inicio: hora_Inicio ,hora_fin: hora_Fin,id_cancha: Number(idCancha),equipamiento: equipamientoO,cantidad_jugadores: Number(cantidad),admin: user.admin});
         setFecha('');
         setHoraInicio('');
         setHoraFin('');
@@ -328,7 +328,6 @@ export const Reservar = () => {
                 </div>
             )}
 
-            {/* FORMULARIO EQUIPAMENTO OPCIONAL*/}
             {mostrarFormEquipamiento && idBoletaReserva && (
                 <div>
                     <h3>SELECCIONE EQUIPAMIENTO</h3>
@@ -357,7 +356,6 @@ export const Reservar = () => {
                         <button type="submit">Agregar Equipamiento</button>
                     </form>
 
-                    {/* SE MUESTRAN LOS EQUIPAMIENTOS SELECCIONADOS PARA CONFIRMAR*/}
                     {equipamientosSeleccionados.length > 0 && (
                         <div>
                             <h4>Equipamiento seleccionado:</h4>

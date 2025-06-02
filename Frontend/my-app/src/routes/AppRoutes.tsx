@@ -9,6 +9,7 @@ import { HistorialReservas } from '../pages/reservasHistorial';
 import { Canchas } from '../pages/Canchas';
 import { Equipamientos } from '../pages/Equipamientos';
 import Notificacion from '../pages/Notificacion';
+import { Noautorizado } from '../pages/Noautorizado';
 
 
 export const AppRoutes = () => {
@@ -16,13 +17,15 @@ export const AppRoutes = () => {
     <Routes>
       <Route path = '/Login' element = {<Login/>}/>
       <Route path = '/Register' element = {<Register/>}/>
+
       <Route path='/Home'element = {<PrivateRoute> <Home/> </PrivateRoute>}/>
       <Route path='/ReservasUsuario'element = {<PrivateRoute> <Reserva/> </PrivateRoute>}/>
       <Route path='/Reservar'element = {<PrivateRoute> <Reservar/> </PrivateRoute>}/>
-      <Route path='/reservasHistorial'element = {<PrivateRoute><HistorialReservas/></PrivateRoute>}/>
-      <Route path='/Canchas'element = {<PrivateRoute><Canchas/></PrivateRoute>}/>
-      <Route path='/Equipamientos'element = {<PrivateRoute><Equipamientos/></PrivateRoute>}/>
+      <Route path='/reservasHistorial'element = {<PrivateRoute requiereAdmin={true}><HistorialReservas/></PrivateRoute>}/>
+      <Route path='/Canchas'element = {<PrivateRoute requiereAdmin={true}><Canchas/></PrivateRoute>}/>
+      <Route path='/Equipamientos'element = {<PrivateRoute requiereAdmin={true}><Equipamientos/></PrivateRoute>}/>
       <Route path='/Notificacion'element = {<PrivateRoute><Notificacion/></PrivateRoute>}/>
+      <Route path='/Noautorizado'element = {<PrivateRoute><Noautorizado/></PrivateRoute>}/>
     </Routes>
   );
 };

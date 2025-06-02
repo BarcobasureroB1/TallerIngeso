@@ -52,9 +52,7 @@ export const Login = () => {
         </form>
         {login.isError && <p>usuario o contraseña incorrectas </p>}
         {errorMsg && <p>{errorMsg}</p>}
-        <p>Si no tienes cuenta, registrate <a href="/Register">aquí</a></p>
-        <p>¿Olvidaste tu contraseña? <a href="/ForgotPassword">Recupera tu contraseña</a></p>
-        
+        <p>Si no tienes cuenta, registrate <a href="/Register">aquí</a></p>   
     </div>
   );
 }

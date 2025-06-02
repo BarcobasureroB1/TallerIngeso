@@ -12,6 +12,7 @@ interface ReservaData
     id_cancha: number;
     equipamiento: boolean;
     cantidad_jugadores: number;
+    admin: boolean;
 }
 
 interface CancelarResponse
@@ -60,8 +61,8 @@ export function useReservasVigentes(fechaActual: Date) {     //pa listar las res
 export function useCrearReserva (onSuccess: (data: ReservarResponse) => void, onFail:(error:string)=>void){ 
     const clienteQuery = useQueryClient();
     return useMutation<ReservarResponse,AxiosError,ReservaData>({
-        mutationFn: async ({rut_cliente, fecha, hora_inicio, hora_fin, id_cancha,equipamiento,cantidad_jugadores}:ReservaData): Promise<ReservarResponse>  => {
-            const respuesta = await api.post('api/v1/reserva',{rut_cliente, fecha, hora_inicio, hora_fin, id_cancha, equipamiento,cantidad_jugadores});
+        mutationFn: async ({rut_cliente, fecha, hora_inicio, hora_fin, id_cancha,equipamiento,cantidad_jugadores,admin}:ReservaData): Promise<ReservarResponse>  => {
+            const respuesta = await api.post('api/v1/reserva',{rut_cliente, fecha, hora_inicio, hora_fin, id_cancha, equipamiento,cantidad_jugadores,admin});
             return respuesta.data
         },
         onSuccess: (data) => {
@@ -78,12 +79,12 @@ export function useCrearReserva (onSuccess: (data: ReservarResponse) => void, on
 export function useEliminarReserva(){   
     const clienteQuery = useQueryClient();
     return useMutation({
-        mutationFn: async (id_reserva: number) => {
-            await api.patch(`api/v1/reserva/${id_reserva}`)
+        mutationFn: async (eliminacion:{id_reserva: number, admin: boolean}) => {
+            await api.patch(`api/v1/reserva/${eliminacion.id_reserva}`, {eliminacion})
         },
         onSuccess: () => {
             clienteQuery.invalidateQueries({queryKey:['reserva']});
-        }                            //revisar como mostrar el error de eliminar reservas
+        }                            
     });
 
 }
@@ -91,7 +92,7 @@ export function useEliminarReserva(){
 export function useModificarCancha(){   
     const clienteQuery = useQueryClient();
     return useMutation({
-        mutationFn: async (modificacionCancha:{id_reserva: number, id_Cancha: number}) => {
+        mutationFn: async (modificacionCancha:{id_reserva: number, id_cancha: number, admin: boolean}) => {
             await api.patch(`api/v1/reserva`,modificacionCancha)
 
         },
@@ -105,7 +106,7 @@ export function useModificarCancha(){
 export function useModificarFechaHora(){   
     const clienteQuery = useQueryClient();
     return useMutation({
-        mutationFn: async (modificacionCanchaF:{id_reserva: number, fecha: Date, horaInicio: string, horaFin: string}) => {
+        mutationFn: async (modificacionCanchaF:{id_reserva: number, fecha: Date, hora_inicio: string, hora_fin: string, admin: boolean}) => {
             await api.patch(`api/v1/reserva`,modificacionCanchaF)
 
         },

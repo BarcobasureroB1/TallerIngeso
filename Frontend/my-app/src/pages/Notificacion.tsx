@@ -53,7 +53,7 @@ export const Notificacion = () => {
                             </li>
                         ))}
                     </ul>
-                ) : (<p> No hay Equipamiento</p>)
+                ) : (<p> No hay notificaciones</p>)
                 }
             </>
             )}
