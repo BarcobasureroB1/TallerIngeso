@@ -102,6 +102,7 @@ export class ReservaService {
   await this.boletaRepository.save(boleta);
   
   
+  
 
   const reserva = this.reservaRepository.create({
     cliente,
@@ -115,7 +116,8 @@ export class ReservaService {
   });
 
   const reservaGuardada = await this.reservaRepository.save(reserva);
-  this.notificacionService.createnoti(dto.rut_cliente, `Reserva creada para el ${dto.fecha} de ${dto.hora_inicio} a ${dto.hora_fin} en la cancha ${cancha.id_cancha}.`);
+  console.log(boleta.numero_boleta);
+  await this.notificacionService.createnoti(dto.rut_cliente, `Reserva creada para el ${dto.fecha} de ${dto.hora_inicio} a ${dto.hora_fin} en la cancha ${cancha.id_cancha}.`);
   return {
   id_reserva: reservaGuardada.id_reserva,
   fecha: reservaGuardada.fecha,
@@ -303,10 +305,10 @@ async seleccrearreserva(dto: CreateReservaDto) {
   const admin = cliente.admin;
   if (!admin) {
     
-    await this.crearReserva(dto);
+   return await this.crearReserva(dto);
   }
   else {
-    await this.crearReservaadmin(dto);
+  return await this.crearReservaadmin(dto);
   }
 
 
