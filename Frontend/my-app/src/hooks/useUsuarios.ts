@@ -11,7 +11,7 @@ export function useAgregarSaldo(){
             await api.post(`api/v1/usuarios/agregar-saldo`, {saldo: saldoAgregado});	
         },
         onSuccess: () => {
-            clienteQuery.invalidateQueries({queryKey:['usuarios']});
+            clienteQuery.invalidateQueries({queryKey:['usuarios/agregar-saldo']});
         }                            //revisar como mostrar el error de agregar saldo
     });
 

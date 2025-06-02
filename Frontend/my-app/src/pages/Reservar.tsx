@@ -2,11 +2,12 @@ import React, {SyntheticEvent, useState} from 'react'
 import { useUserProfile } from '../hooks/useUserProfile';
 import {useNavigate} from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
-import { useReservasGenerales,useCrearReserva } from '../hooks/useReservas';
+import { useCrearReserva } from '../hooks/useReservas';
 import {useAgregarSaldo} from '../hooks/useUsuarios';
 import { useCanchas } from '../hooks/useCanchas';
 import { useEquipamiento } from '../hooks/useEquipamiento';
 import { useCrearBoleta } from '../hooks/useBoletas';
+import { useCrearJugador } from '../hooks/useJugadores';
 
 export const Reservar = () => {
     //GESTION DE DATOS PARA SELECCIONAR EQUIPAMIENTOS
@@ -29,7 +30,6 @@ export const Reservar = () => {
     const {data: user, isLoading: cargauser, isError} = useUserProfile();
 
     //mostrar reservas y reservar
-    const {data: reservas,isLoading: cargaReserva} = useReservasGenerales();
     const [errorMsg,setErrorMsg] = useState('');
     const [errormsg,seterrorMSG] = useState('');
     const [fechaA,setFecha] = useState('');
@@ -37,7 +37,19 @@ export const Reservar = () => {
     const [hora_Fin,setHoraFin] = useState('');
     const [idCancha,setIDCancha] = useState('');
     const [equipamientoO,setEquipamiento] = useState(false);
-    
+    const [cantidad,setCantidadJugadores] = useState('');
+
+    // Estados para jugadores
+    const [mostrarFormJugador, setMostrarFormJugador] = useState(false);
+    const [jugadoresRegistrados, setJugadoresRegistrados] = useState(0);
+    const [jugadorActual, setJugadorActual] = useState({
+        nombres: '',
+        apellidos: '',
+        rut: '',
+        edad: ''
+    });
+    const crearJugador = useCrearJugador();
+
     //añadir a Saldo
     const [saldoAgregado,setSaldo] = useState('');
     const agregarMonto = useAgregarSaldo();
@@ -48,10 +60,18 @@ export const Reservar = () => {
     //mostrar equipamiento
     const {data: ListaEquipamiento, isLoading: cargaEquipamiento} = useEquipamiento();
 
+    
+
     //Crear reserva
     const crearReserv = useCrearReserva((data) => {
         console.log('Reserva creada con la boleta: ', data.id_boleta);
         setIdBoletaReserva(data.id_boleta);
+        setCantidadJugadores(data.cantidadJugadores.toString());
+
+        if (data.cantidadJugadores > 0) {
+            setMostrarFormJugador(true);
+        }
+
         if (equipamientoO) {
             setMostrarFormEquipamiento(true);
         }
@@ -130,11 +150,12 @@ export const Reservar = () => {
             return;
         }
 
-        crearReserv.mutate({rut_cliente: user.rut ,fecha: new Date(fechaA) ,hora_inicio: hora_Inicio ,hora_fin: hora_Fin,id_cancha: Number(idCancha),equipamiento: equipamientoO});
+        crearReserv.mutate({rut_cliente: user.rut ,fecha: new Date(fechaA) ,hora_inicio: hora_Inicio ,hora_fin: hora_Fin,id_cancha: Number(idCancha),equipamiento: equipamientoO,cantidad_jugadores: Number(cantidad),admin: user.admin});
         setFecha('');
         setHoraInicio('');
         setHoraFin('');
         setIDCancha('');
+        setCantidadJugadores('');
     };
     
 
@@ -162,15 +183,56 @@ export const Reservar = () => {
         }
     };
 
+    // Crear jugadores en orden
+    const registrarJugador = async (e: SyntheticEvent) => {
+        e.preventDefault();
+        if (!idBoletaReserva) return;
+
+        try {
+            await crearJugador.mutateAsync({
+                numero_boleta: idBoletaReserva,
+                nombres_jugador: jugadorActual.nombres,
+                apellidos_jugador: jugadorActual.apellidos,
+                rut_jugador: jugadorActual.rut,
+                edad_jugador: Number(jugadorActual.edad)
+            });
+
+            
+            setJugadoresRegistrados(prev => prev + 1);
+            setJugadorActual({
+                nombres: '',
+                apellidos: '',
+                rut: '',
+                edad: ''
+            });
+
+            
+            if (jugadoresRegistrados + 1 >= Number(cantidad)) {
+                setMostrarFormJugador(false);
+                alert('Todos los jugadores han sido registrados!');
+            }
+        } catch (error) {
+            setErrorMsg('Error al registrar jugador');
+        }
+    };
+
 
     const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEquipamiento(e.target.checked);
     };
 
+    const handleJugadorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setJugadorActual(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
     return (
     <div> 
         
-        <h2> Bienvenido: {user?.rut}, tu saldo actual es: ${user?.saldo} </h2>
+        <h2> Bienvenid@ {user?.nombre}, tu saldo actual es: ${user?.saldo} </h2>
         
         <h3>Agregar Saldo a tu cuenta: </h3>
         <form onSubmit={enviarSuma}>
@@ -195,15 +257,16 @@ export const Reservar = () => {
                 <ul>
                     {canchas.map((c: any) => (
                         <li key = {c.id_cancha}>
-                            {c.id_cancha} - <p>Precio de Cancha: </p> - ${c.costo} 
+                            {c.id_cancha} - <p>Precio de Cancha: </p>  ${c.costo} - <p>Capacidad de la cancha:</p> {c.capacidad} -
                             <p>---------------------------------------------------</p>
                         </li>
                     ))}
                 </ul>
-                    ) : (<p> No hay productos</p>)
+                    ) : (<p> No hay canchas</p>)
                 }
 
-                <input type="number" placeholder='ID Cancha' required value={idCancha} onChange={(e) => setIDCancha(e.target.value)} />
+                <p>Ingrese cantidad de jugadores</p>
+                <input type="number" placeholder='cantidad de jugadores' required value={cantidad} onChange={(e) => setCantidadJugadores(e.target.value)}min="1"/>
                 
                 <div>
                     <label>
@@ -218,8 +281,53 @@ export const Reservar = () => {
 
                 <button type="submit">Confirmar Reserva</button>
             </form>
-            
-            {/* FORMULARIO EQUIPAMENTO OPCIONAL*/}
+
+            {mostrarFormJugador && idBoletaReserva && (
+                <div>
+                    <h3>REGISTRO DE JUGADORES ({jugadoresRegistrados + 1}/{cantidad})</h3>
+                    <form onSubmit={registrarJugador}>
+                        <input
+                            type="text"
+                            name="nombres"
+                            placeholder="Nombres del jugador"
+                            value={jugadorActual.nombres}
+                            onChange={handleJugadorChange}
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="apellidos"
+                            placeholder="Apellidos del jugador"
+                            value={jugadorActual.apellidos}
+                            onChange={handleJugadorChange}
+                            required
+                        />
+                        <input
+                            type="text"
+                            name="rut"
+                            placeholder="RUT del jugador"
+                            value={jugadorActual.rut}
+                            onChange={handleJugadorChange}
+                            required
+                        />
+                        <input
+                            type="number"
+                            name="edad"
+                            placeholder="Edad del jugador"
+                            min="1"
+                            value={jugadorActual.edad}
+                            onChange={handleJugadorChange}
+                            required
+                        />
+                        <button type="submit">
+                            {jugadoresRegistrados + 1 < Number(cantidad) ? 
+                                'Registrar y continuar' : 
+                                'Registrar último jugador'}
+                        </button>
+                    </form>
+                </div>
+            )}
+
             {mostrarFormEquipamiento && idBoletaReserva && (
                 <div>
                     <h3>SELECCIONE EQUIPAMIENTO</h3>
@@ -248,7 +356,6 @@ export const Reservar = () => {
                         <button type="submit">Agregar Equipamiento</button>
                     </form>
 
-                    {/* SE MUESTRAN LOS EQUIPAMIENTOS SELECCIONADOS PARA CONFIRMAR*/}
                     {equipamientosSeleccionados.length > 0 && (
                         <div>
                             <h4>Equipamiento seleccionado:</h4>
@@ -275,4 +382,3 @@ export const Reservar = () => {
     );
     
 };
-
