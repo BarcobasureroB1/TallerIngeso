@@ -31,6 +31,7 @@ export class ReservaService {
 
   ) {}
  
+  // Método para crear una reserva
   async crearReserva(dto: CreateReservaDto) {
   const cliente = await this.usuarioRepository.findOneBy({ rut: dto.rut_cliente });
   const cancha = await this.canchaRepository.findOneBy({ id_cancha: dto.id_cancha });
@@ -136,7 +137,7 @@ export class ReservaService {
 
 
 
-
+// Método para crear una reserva como administrador
 async crearReservaadmin(dto: CreateReservaDto) {
   const cliente = await this.usuarioRepository.findOneBy({ rut: dto.rut_cliente });
   const cancha = await this.canchaRepository.findOneBy({ id_cancha: dto.id_cancha });
@@ -272,6 +273,8 @@ async findAll() {
   remove(id: number) {
     return `This action removes a #${id} reserva`;
   }
+
+  // Método para cancelar una reserva
   async cancelar(id: number, dto: CancelarReservaDto) {
   const reserva = await this.reservaRepository.findOneBy({ id_reserva: id });
   if (!reserva) {
@@ -280,15 +283,18 @@ async findAll() {
   const fechaActual = new Date();
   const fechaReserva = new Date(reserva.fecha);
   const diferenciaDias = Math.floor((fechaReserva.getTime() - fechaActual.getTime()) / (1000 * 60 * 60 * 24));
+  
+  if (!dto.admin) {
   if (diferenciaDias < 7) {
     throw new Error('No se puede cancelar una reserva con menos de 7 días de anticipación.');
   }
-
+  }
   reserva.cancelado = true;
   await this.notificacionService.createnoti(reserva.cliente.rut, `Reserva del ${reserva.fecha} de ${reserva.hora_inicio} a ${reserva.hora_fin} en la cancha ${reserva.cancha.id_cancha} ha sido cancelada.`);
   
   return await this.reservaRepository.save(reserva);
 }
+// Método para crear una reserva, diferenciando entre cliente y administrador
 async seleccrearreserva(dto: CreateReservaDto) {
   const cliente = await this.usuarioRepository.findOneBy({ rut: dto.rut_cliente });
   if (!cliente) {
@@ -305,6 +311,7 @@ async seleccrearreserva(dto: CreateReservaDto) {
 
 
 }
+// Método para verificar si una cancha está ocupada en una fecha y rango horario específicos
 private async canchaOcupada(
   id_cancha: number,
   fecha: string,
@@ -343,19 +350,34 @@ private async canchaOcupada(
 }
 
 
+// Método para modificar una reserva
+async modificarReserva(dto: modificarReservaDto) {
 
-async modificarReserva(id: number, dto: modificarReservaDto) {
+  const reserva = await this.reservaRepository.findOneBy({ id_reserva: dto.idReserva });
+  if (!reserva) {
+    throw new Error('Reserva no encontrada');
+  }
+  if(!dto.admin){
+    const fechaActual = new Date();
+    const fechaReserva = new Date(reserva.fecha);
+    const diferenciaDias = Math.floor((fechaReserva.getTime() - fechaActual.getTime()) / (1000 * 60 * 60 * 24));
+    
+    if (diferenciaDias < 7) {
+      throw new Error('No se puede modificar una reserva con menos de 7 días de anticipación.');
+    }
+
+  }
 
   if (dto.idCancha) {
     const cancha = await this.canchaRepository.findOneBy({ id_cancha: dto.idCancha });
     if (!cancha) {
       throw new Error('Cancha no encontrada');
     }
-    const reserva = await this.reservaRepository.findOneBy({ id_reserva: id });
+    const reserva = await this.reservaRepository.findOneBy({ id_reserva: dto.idReserva });
     if (!reserva) {
       throw new Error('Reserva no encontrada');
     }
-    if (await this.canchaOcupada(dto.idCancha, reserva.fecha, reserva.hora_inicio, reserva.hora_fin, id)) {
+    if (await this.canchaOcupada(dto.idCancha, reserva.fecha, reserva.hora_inicio, reserva.hora_fin, dto.idReserva)) {
       throw new Error(`La cancha ya está ocupada entre ${reserva.hora_inicio} y ${reserva.hora_fin} ese día.`);
     }
    
@@ -365,8 +387,8 @@ async modificarReserva(id: number, dto: modificarReservaDto) {
 
   
   }
-   if(dto.hora_Inicio && dto.hora_Termino){
-      const reserva = await this.reservaRepository.findOneBy({ id_reserva: id });
+   if(dto.hora_Inicio && dto.hora_Termino && dto.fecha){
+      const reserva = await this.reservaRepository.findOneBy({ id_reserva: dto.idReserva });
       if (!reserva) {
         throw new Error('Reserva no encontrada');
       }
@@ -376,7 +398,7 @@ async modificarReserva(id: number, dto: modificarReservaDto) {
         throw new Error('Cancha no encontrada');
       }
 
-      if (await this.canchaOcupada(reserva.cancha.id_cancha, reserva.fecha, dto.hora_Inicio, dto.hora_Termino, id)) {
+      if (await this.canchaOcupada(reserva.cancha.id_cancha, dto.fecha, dto.hora_Inicio, dto.hora_Termino, dto.idReserva)) {
         throw new Error(`La cancha ya está ocupada entre ${dto.hora_Inicio} y ${dto.hora_Termino} ese día.`);
       }
       const horaInicio = parseHora(dto.hora_Inicio);

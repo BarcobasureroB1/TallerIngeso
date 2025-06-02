@@ -1,17 +1,19 @@
-import { IsString, IsNumber } from "class-validator";
+import { IsString, IsNumber, IsBoolean } from "class-validator";
 
 export class modificarReservaDto {
     @IsString()
     rutUsuario: string;
 
     @IsNumber()
-    idReserva: number;
+    id_reserva: number;
+    @IsString()
+    fecha?: string;
 
     @IsString()
-    hora_Inicio?: string;
+    hora_inicio?: string;
 
     @IsString()
-    hora_Termino?: string;
+    hora_fin?: string;
 
     @IsString()
     idEquipamento?: string;
@@ -20,7 +22,9 @@ export class modificarReservaDto {
     cantidad?: number;
 
     @IsNumber()
-    idCancha?: number;
+    id_cancha?: number;
+    @IsBoolean()
+    admin: boolean;
     
 
 }   
