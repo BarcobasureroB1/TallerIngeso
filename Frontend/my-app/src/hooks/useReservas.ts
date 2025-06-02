@@ -63,7 +63,12 @@ export function useCrearReserva (onSuccess: (data: ReservarResponse) => void, on
     return useMutation<ReservarResponse,AxiosError,ReservaData>({
         mutationFn: async ({rut_cliente, fecha, hora_inicio, hora_fin, id_cancha,equipamiento,cantidad_jugadores,admin}:ReservaData): Promise<ReservarResponse>  => {
             const respuesta = await api.post('api/v1/reserva',{rut_cliente, fecha, hora_inicio, hora_fin, id_cancha, equipamiento,cantidad_jugadores,admin});
-            return respuesta.data
+
+            if (!respuesta.data || !respuesta.data.id_boleta) {
+                throw new Error('La respuesta del servidor no contiene id_boleta');
+            }
+            
+            return respuesta.data;
         },
         onSuccess: (data) => {
             clienteQuery.invalidateQueries({queryKey:['reserva']});
