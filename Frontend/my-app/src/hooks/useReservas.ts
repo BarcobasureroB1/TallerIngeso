@@ -29,7 +29,7 @@ interface ReservarResponse
 
 export function useReservas(rutUser: string, fecha: Date) {     //pa listar las reservas
     return useQuery({
-        queryKey: ['reserva', rutUser],
+        queryKey: ['reserva', rutUser, fecha],
         queryFn: async () => {
             const respuesta = await api.get('api/v1/reserva',{params:{rut_cliente: rutUser, fecha: fecha}});
             return respuesta.data;
@@ -84,6 +84,34 @@ export function useEliminarReserva(){
         onSuccess: () => {
             clienteQuery.invalidateQueries({queryKey:['reserva']});
         }                            //revisar como mostrar el error de eliminar reservas
+    });
+
+}
+
+export function useModificarCancha(){   
+    const clienteQuery = useQueryClient();
+    return useMutation({
+        mutationFn: async (modificacionCancha:{id_reserva: number, id_Cancha: number}) => {
+            await api.patch(`api/v1/reserva`,modificacionCancha)
+
+        },
+        onSuccess: () => {
+            clienteQuery.invalidateQueries({queryKey:['reserva']});
+        }                          
+    });
+
+}
+
+export function useModificarFechaHora(){   
+    const clienteQuery = useQueryClient();
+    return useMutation({
+        mutationFn: async (modificacionCanchaF:{id_reserva: number, fecha: Date, horaInicio: string, horaFin: string}) => {
+            await api.patch(`api/v1/reserva`,modificacionCanchaF)
+
+        },
+        onSuccess: () => {
+            clienteQuery.invalidateQueries({queryKey:['reserva']});
+        }                          
     });
 
 }

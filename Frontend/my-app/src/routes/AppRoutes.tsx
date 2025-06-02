@@ -6,6 +6,9 @@ import {PrivateRoute} from './PrivateRoute';
 import {Reserva} from '../pages/ReservasUsuario';
 import { Reservar } from '../pages/Reservar';
 import { HistorialReservas } from '../pages/reservasHistorial';
+import { Canchas } from '../pages/Canchas';
+import { Equipamientos } from '../pages/Equipamientos';
+import Notificacion from '../pages/Notificacion';
 
 
 export const AppRoutes = () => {
@@ -17,6 +20,9 @@ export const AppRoutes = () => {
       <Route path='/ReservasUsuario'element = {<PrivateRoute> <Reserva/> </PrivateRoute>}/>
       <Route path='/Reservar'element = {<PrivateRoute> <Reservar/> </PrivateRoute>}/>
       <Route path='/reservasHistorial'element = {<PrivateRoute><HistorialReservas/></PrivateRoute>}/>
+      <Route path='/Canchas'element = {<PrivateRoute><Canchas/></PrivateRoute>}/>
+      <Route path='/Equipamientos'element = {<PrivateRoute><Equipamientos/></PrivateRoute>}/>
+      <Route path='/Notificacion'element = {<PrivateRoute><Notificacion/></PrivateRoute>}/>
     </Routes>
   );
 };
