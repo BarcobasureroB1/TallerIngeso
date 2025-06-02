@@ -132,7 +132,7 @@ export class ReservaService {
     costo: cancha.costo,
   },
   id_boleta: boleta.numero_boleta, 
-  CantidadJugadores: reservaGuardada.cantidad_jugadores,
+  cantidadJugadores: reservaGuardada.cantidad_jugadores,
 
 };
 }

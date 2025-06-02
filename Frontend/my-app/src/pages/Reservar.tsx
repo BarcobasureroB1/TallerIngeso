@@ -71,6 +71,8 @@ export const Reservar = () => {
         
         console.log('Reserva creada con la boleta: ', data.id_boleta);
         setIdBoletaReserva(data.id_boleta);
+
+        console.log('Cantidad de jugadores:', data.cantidadJugadores);
         setCantidadJugadores(data.cantidadJugadores.toString());
 
         if (data.cantidadJugadores > 0) {

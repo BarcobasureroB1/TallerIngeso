@@ -31,18 +31,22 @@ export class NotificacionService {
 }
 
   async findAll() {
-    await this.notificacionRepository.find({
+    
+    return await this.notificacionRepository.find({
       relations: ['usuario'],
-    });
-    return `This action returns all notificacion`;
+    });;
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
+    const cliente = await this.usuarioRepository.findOneBy({ rut: id });
+    if (!cliente) {
+      throw new Error('Usuario no encontrado');
+    }
    return await this.notificacionRepository.find(
       {
-        where: { id },
+        where: { usuario: cliente },
         relations: ['usuario'],
-        order : { fechaHora: 'DESC' }, // Ordenar por fechaHora de forma descendente
+        order : { fechaHora: 'DESC' }, 
       }
       
     );

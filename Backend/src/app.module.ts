@@ -14,6 +14,7 @@ import { BoletaEquipamiento } from './modules/boletaequipamento/entities/boletae
 import { BoletaequipamentoModule } from './modules/boletaequipamento/boletaequipamento.module';
 import { NotificacionModule } from './modules/notificacion/notificacion.module';
 import { BoletaJugadores } from './modules/boleta-jugadores/entities/boleta-jugadore.entity';
+import { BoletaJugadoresModule } from './modules/boleta-jugadores/boleta-jugadores.module';
 
 @Module({
   imports: [
@@ -31,7 +32,7 @@ import { BoletaJugadores } from './modules/boleta-jugadores/entities/boleta-juga
     UsuariosModule,AuthModule,ReservaModule,
     EquipamentoModule,CanchaModule,BoletasModule,
     BoletaequipamentoModule, NotificacionModule,
-    BoletaJugadores],
+    BoletaJugadoresModule],
   controllers: [],
   providers: [],
 })
