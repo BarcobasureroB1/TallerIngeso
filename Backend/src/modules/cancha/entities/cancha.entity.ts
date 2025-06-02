@@ -9,6 +9,8 @@ export class Cancha {
 
   @Column('float')
   costo: number;
+  @Column({ type: 'integer', default: 4 })
+  capacidad: number;
 
   @OneToMany(() => Reserva, (reserva) => reserva.cancha)
   reservas: Reserva[];

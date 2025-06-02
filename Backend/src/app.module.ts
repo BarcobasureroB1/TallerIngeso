@@ -12,6 +12,8 @@ import { CanchaModule } from './modules/cancha/cancha.module';
 import { BoletasModule } from './modules/boletas/boletas.module';
 import { BoletaEquipamiento } from './modules/boletaequipamento/entities/boletaequipamento.entity';
 import { BoletaequipamentoModule } from './modules/boletaequipamento/boletaequipamento.module';
+import { NotificacionModule } from './modules/notificacion/notificacion.module';
+import { BoletaJugadores } from './modules/boleta-jugadores/entities/boleta-jugadore.entity';
 
 @Module({
   imports: [
@@ -26,7 +28,10 @@ import { BoletaequipamentoModule } from './modules/boletaequipamento/boletaequip
       synchronize: true,
       autoLoadEntities: true,
     }),
-    UsuariosModule,AuthModule,ReservaModule,EquipamentoModule,CanchaModule,BoletasModule,BoletaequipamentoModule],
+    UsuariosModule,AuthModule,ReservaModule,
+    EquipamentoModule,CanchaModule,BoletasModule,
+    BoletaequipamentoModule, NotificacionModule,
+    BoletaJugadores],
   controllers: [],
   providers: [],
 })
