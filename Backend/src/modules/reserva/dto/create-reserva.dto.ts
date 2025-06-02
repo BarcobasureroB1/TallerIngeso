@@ -24,6 +24,9 @@ export class CreateReservaDto {
   @IsNumber()
   cantidad_jugadores: number;
 
+  @IsBoolean()
+  admin: boolean;
+
   
   
 
