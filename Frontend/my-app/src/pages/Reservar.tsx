@@ -264,6 +264,7 @@ export const Reservar = () => {
                 </ul>
                     ) : (<p> No hay canchas</p>)
                 }
+                <input type="number" placeholder='ID Cancha' required value={idCancha} onChange={(e) => setIDCancha(e.target.value)} />
 
                 <p>Ingrese cantidad de jugadores</p>
                 <input type="number" placeholder='cantidad de jugadores' required value={cantidad} onChange={(e) => setCantidadJugadores(e.target.value)}min="1"/>
