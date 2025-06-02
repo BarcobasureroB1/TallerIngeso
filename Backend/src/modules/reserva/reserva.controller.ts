@@ -2,6 +2,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from 
 import { ReservaService } from './reserva.service';
 import { CreateReservaDto } from './dto/create-reserva.dto';
 import { UpdateReservaDto } from './dto/update-reserva.dto';
+import { CancelarReservaDto } from './dto/cancelar-reserva.dto';
+import { modificarReservaDto } from './dto/modificar-reserva.dto';
 
 @Controller('reserva')
 export class ReservaController {
@@ -9,7 +11,7 @@ export class ReservaController {
 
   @Post()
   create(@Body() createReservaDto: CreateReservaDto) {
-    return this.reservaService.crearReserva(createReservaDto);
+    return this.reservaService.seleccrearreserva(createReservaDto);
   }
 
   @Get()
@@ -22,8 +24,12 @@ export class ReservaController {
     return this.reservaService.findByRut(rut);
   }
   @Patch(':id')
-  async cancelarReserva(@Param('id', ParseIntPipe) id: number) {
-    return await this.reservaService.cancelar(id);
+  async cancelarReserva(@Param('id', ParseIntPipe) id: number, @Body() dto: CancelarReservaDto) {
+    return await this.reservaService.cancelar(id, dto);
 
+  }
+  @Patch(':id/modificar')
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: modificarReservaDto) {
+    return this.reservaService.modificarReserva(id, dto);
   }
 }

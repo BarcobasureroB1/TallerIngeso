@@ -37,6 +37,8 @@ export class Reserva {
   @ManyToOne(() => Boleta, { nullable: true })
   @JoinColumn({ name: 'boleta_equipamiento' })
   boletaEquipamiento: Boleta | null;
+  @Column({ type: 'integer', default: 2 })
+  cantidad_jugadores: number;
 
   @Column({ default: false })
   cancelado: boolean;

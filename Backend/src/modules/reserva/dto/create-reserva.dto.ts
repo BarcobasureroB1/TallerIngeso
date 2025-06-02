@@ -1,4 +1,6 @@
-import { IsBoolean, IsDateString, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsDateString, IsNumber, IsString, ValidateNested } from 'class-validator';
+import { JugadorDto } from '../../boleta-jugadores/dto/jugador.dto';
+import { Type } from 'class-transformer';
 
 export class CreateReservaDto {
   @IsString()
@@ -18,6 +20,12 @@ export class CreateReservaDto {
 
   @IsBoolean()
   equipamiento: boolean;
+  
+  @IsNumber()
+  cantidad_jugadores: number;
+
+  
+  
 
   
 

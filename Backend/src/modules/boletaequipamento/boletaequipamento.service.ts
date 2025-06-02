@@ -72,6 +72,9 @@ async agregarEquipamientoABoleta(dto: { numero_boleta: number, nombre_equipamien
   if (!equipamiento) {
     throw new Error('Equipamiento no encontrado');
   }
+  if (equipamiento.stock < dto.cantidad) {
+    throw new Error(`Cantidad solicitada (${dto.cantidad}) supera la cantidad disponible (${equipamiento.stock})`);
+  }
   const reserva = await this.reservaRepository.findOne({
     where: { boletaEquipamiento: { numero_boleta: dto.numero_boleta } },
     relations: ['cliente'],

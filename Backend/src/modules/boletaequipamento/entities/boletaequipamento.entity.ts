@@ -17,4 +17,6 @@ export class BoletaEquipamiento {
 
   @Column()
   cantidad: number;
+  @Column ( {default: false} )
+  eliminado: boolean;
 }
