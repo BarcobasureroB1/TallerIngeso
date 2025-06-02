@@ -353,7 +353,7 @@ private async canchaOcupada(
 // Método para modificar una reserva
 async modificarReserva(dto: modificarReservaDto) {
 
-  const reserva = await this.reservaRepository.findOneBy({ id_reserva: dto.idReserva });
+  const reserva = await this.reservaRepository.findOneBy({ id_reserva: dto.id_reserva });
   if (!reserva) {
     throw new Error('Reserva no encontrada');
   }
@@ -368,16 +368,16 @@ async modificarReserva(dto: modificarReservaDto) {
 
   }
 
-  if (dto.idCancha) {
-    const cancha = await this.canchaRepository.findOneBy({ id_cancha: dto.idCancha });
+  if (dto.id_cancha) {
+    const cancha = await this.canchaRepository.findOneBy({ id_cancha: dto.id_cancha });
     if (!cancha) {
       throw new Error('Cancha no encontrada');
     }
-    const reserva = await this.reservaRepository.findOneBy({ id_reserva: dto.idReserva });
+    const reserva = await this.reservaRepository.findOneBy({ id_reserva: dto.id_reserva });
     if (!reserva) {
       throw new Error('Reserva no encontrada');
     }
-    if (await this.canchaOcupada(dto.idCancha, reserva.fecha, reserva.hora_inicio, reserva.hora_fin, dto.idReserva)) {
+    if (await this.canchaOcupada(dto.id_cancha, reserva.fecha, reserva.hora_inicio, reserva.hora_fin, dto.id_reserva)) {
       throw new Error(`La cancha ya está ocupada entre ${reserva.hora_inicio} y ${reserva.hora_fin} ese día.`);
     }
    
@@ -387,28 +387,28 @@ async modificarReserva(dto: modificarReservaDto) {
 
   
   }
-   if(dto.hora_Inicio && dto.hora_Termino && dto.fecha){
-      const reserva = await this.reservaRepository.findOneBy({ id_reserva: dto.idReserva });
+   if(dto.hora_inicio && dto.hora_fin && dto.fecha){
+      const reserva = await this.reservaRepository.findOneBy({ id_reserva: dto.id_reserva });
       if (!reserva) {
         throw new Error('Reserva no encontrada');
       }
     
-      const cancha = await this.canchaRepository.findOneBy({ id_cancha: dto.idCancha });
+      const cancha = await this.canchaRepository.findOneBy({ id_cancha: dto.id_cancha });
       if (!cancha) {
         throw new Error('Cancha no encontrada');
       }
 
-      if (await this.canchaOcupada(reserva.cancha.id_cancha, dto.fecha, dto.hora_Inicio, dto.hora_Termino, dto.idReserva)) {
-        throw new Error(`La cancha ya está ocupada entre ${dto.hora_Inicio} y ${dto.hora_Termino} ese día.`);
+      if (await this.canchaOcupada(reserva.cancha.id_cancha, dto.fecha, dto.hora_inicio, dto.hora_fin, dto.id_reserva)) {
+        throw new Error(`La cancha ya está ocupada entre ${dto.hora_inicio} y ${dto.hora_fin} ese día.`);
       }
-      const horaInicio = parseHora(dto.hora_Inicio);
-      const horaFin = parseHora(dto.hora_Termino);
+      const horaInicio = parseHora(dto.hora_inicio);
+      const horaFin = parseHora(dto.hora_fin);
       if (horaInicio < 8 * 60 || horaFin > 20 * 60) {
         throw new Error('Las reservas deben estar entre las 08:00 y 20:00.');
       }
     
-      reserva.hora_inicio = dto.hora_Inicio;
-      reserva.hora_fin = dto.hora_Termino;
+      reserva.hora_inicio = dto.hora_inicio;
+      reserva.hora_fin = dto.hora_fin;
       await this.reservaRepository.save(reserva);
       return await this.notificacionService.createnoti(reserva.cliente.rut, `La hora de la reserva del ${reserva.fecha} ha sido modificada de ${reserva.hora_inicio} a ${reserva.hora_fin}.`);
     }

@@ -28,8 +28,8 @@ export class ReservaController {
     return await this.reservaService.cancelar(id, dto);
 
   }
-  @Patch(':id/modificar')
-  update(@Param('id', ParseIntPipe) id: number, @Body() dto: modificarReservaDto) {
-    return this.reservaService.modificarReserva(id, dto);
+  @Patch()
+  update(@Body() dto: modificarReservaDto) {
+    return this.reservaService.modificarReserva(dto);
   }
 }
