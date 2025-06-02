@@ -64,6 +64,11 @@ export const Reservar = () => {
 
     //Crear reserva
     const crearReserv = useCrearReserva((data) => {
+        if (!data?.id_boleta) {
+        setErrorMsg('No se recibió el ID de boleta desde el servidor');
+        return;
+        }
+        
         console.log('Reserva creada con la boleta: ', data.id_boleta);
         setIdBoletaReserva(data.id_boleta);
         setCantidadJugadores(data.cantidadJugadores.toString());
