@@ -244,7 +244,16 @@ export const Reservar = () => {
         <h2> Bienvenid@ {user?.nombre}</h2>
         {user.admin === false && (
             <>
-                tu saldo actual es: ${pedirSaldo.saldo}
+                {isLoadingMonto? (
+                <p>Cargando Monto total...</p>
+                ): (
+                <>
+                    <h2> tu saldo es: </h2>
+                        {pedirSaldo.saldo}
+                
+                </>
+                )}
+
                 <h3>Agregar Saldo a tu cuenta: </h3>
                 <form onSubmit={enviarSuma}>
 
