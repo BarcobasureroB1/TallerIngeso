@@ -378,7 +378,7 @@ export const Reservar = () => {
                             <option value="">Seleccione equipamiento</option>
                             {ListaEquipamiento?.map((equip: any) => (
                                 <option key={equip.id_equipamiento} value={equip.nombre}>
-                                    {equip.nombre} (Disponibles: {equip.cantidad_disponible})
+                                    {equip.nombre} (Disponibles: {equip.stock} Precio: {equip.costo})
                                 </option>
                             ))}
                         </select>
