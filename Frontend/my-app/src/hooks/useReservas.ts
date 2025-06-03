@@ -85,10 +85,10 @@ export function useEliminarReserva(){
     const clienteQuery = useQueryClient();
     return useMutation({
         mutationFn: async (eliminacion:{id_reserva: number, admin: boolean}) => {
-            await api.patch('api/v1/reserva', eliminacion)
+            await api.patch('api/v1/reserva/cancelar', eliminacion)
         },
         onSuccess: () => {
-            clienteQuery.invalidateQueries({queryKey:['reserva']});
+            clienteQuery.invalidateQueries({queryKey:['reserva/cancelar']});
         }                            
     });
 
