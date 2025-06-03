@@ -143,8 +143,8 @@ export const Reserva = () =>
                             {p.jugadores?.length > 0 ? (
                                 <ul>
                                     {p.jugadores.map((j: any) => (
-                                        <li key = {j.nombres_jugador}>
-                                            {j.nombres_jugador} {j.apellidos_jugador} (Rut: {j.rut_jugador}, Edad: {j.edad_jugador})
+                                        <li key = {j.nombre}>
+                                            {j.nombre} {j.apellidos} (Rut: {j.rut}, Edad: {j.edad})
                                         </li>
                                     ))}
                                 </ul>
