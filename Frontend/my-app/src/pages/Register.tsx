@@ -4,6 +4,7 @@ import { useRegister } from '../hooks/useRegister';
 
 export const Register = () => { //Hooks
   const [rut, setRut] = useState('');
+  const [nombre,setNombre] = useState('');
   const [correo,setCorreo] = useState('');
   const [password,setPassword] = useState('');
   const [errorMsg,setErrorMsg] = useState('');
@@ -20,7 +21,7 @@ export const Register = () => { //Hooks
   const enviar = (e: SyntheticEvent) => {
     e.preventDefault();
     setErrorMsg('');
-    register.mutate({rut,correo,password});
+    register.mutate({rut,nombre,correo,password});
   };
 
   return (
@@ -31,11 +32,13 @@ export const Register = () => { //Hooks
             <input type = "text" name = "rut" placeholder = 'Ingrese su Rut...' required value={rut}
               onChange={e => setRut(e.target.value)}
             />
-
+            <label>Ingrese su Nombre: </label>
+            <input type = "text" name = "nombre" placeholder = 'Ingrese su Nombre...' required value={nombre}
+              onChange={e => setNombre(e.target.value)}
+            />
             <label>Correo Electronico: </label>
             <input type = "email" name = "email" placeholder = 'Ingrese un correo electronico porfavor...' required value={correo}
               onChange={e => setCorreo(e.target.value)}
-
             />
             <label>Contraseña: </label>
             <input type = "password" name = "password" placeholder = 'Ingrese una contraseña...' required value={password}
