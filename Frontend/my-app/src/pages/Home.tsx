@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useUserProfile } from '../hooks/useUserProfile';
 import {useNavigate} from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
@@ -12,12 +12,19 @@ export const Home = () => {
 
     const {data: reservas, isLoading: cargaReservas} = useReservasVigentes();     
 
-    if(!token)
-    {
-        
-        navigate('/Login');
-        return null;
-    }
+    useEffect(() => {
+        if (!token) {
+            navigate('/Login');
+        }
+    }, [token, navigate]);
+
+    
+    useEffect(() => {
+        if (isError) {
+            setToken(null);
+            navigate('/login');
+        }
+    }, [isError, setToken, navigate]);
     
     const logout = () => {
         setToken(null);
@@ -26,16 +33,9 @@ export const Home = () => {
     }
 
 
-    if(cargauser)
+    if(cargauser || !user)
     {
         return <div> Cargando... </div>;
-    }
-    
-    if(isError)
-    {
-        setToken(null);
-        navigate('/login');
-        return null;
     }
     
 
