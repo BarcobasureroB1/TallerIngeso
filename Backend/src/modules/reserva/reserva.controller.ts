@@ -23,9 +23,10 @@ export class ReservaController {
   findByRut(@Param('rut') rut: string) {
     return this.reservaService.findByRut(rut);
   }
-  @Patch(':id')
-  async cancelarReserva(@Param('id', ParseIntPipe) id: number, @Body() dto: CancelarReservaDto) {
-    return await this.reservaService.cancelar(id, dto);
+  @Patch('cancelar')
+  async cancelarReserva( @Body() dto: CancelarReservaDto) {
+    console.log(dto);
+    return await this.reservaService.cancelar(dto);
 
   }
   @Patch()
