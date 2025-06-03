@@ -32,7 +32,7 @@ export function useReservas(rutUser: string) {     //pa listar las reservas
     return useQuery({
         queryKey: ['reserva', rutUser],
         queryFn: async () => {
-            const respuesta = await api.get('api/v1/reserva',{params:{rut_cliente: rutUser}});
+            const respuesta = await api.get(`api/v1/reserva/${rutUser}`);
             return respuesta.data;
         }
     });

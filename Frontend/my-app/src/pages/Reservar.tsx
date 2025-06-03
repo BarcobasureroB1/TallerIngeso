@@ -38,6 +38,7 @@ export const Reservar = () => {
     const [idCancha,setIDCancha] = useState('');
     const [equipamientoO,setEquipamiento] = useState(false);
     const [cantidad,setCantidadJugadores] = useState('');
+    const [rutCliente,setRutCliente] = useState('');
 
     // Estados para jugadores
     const [mostrarFormJugador, setMostrarFormJugador] = useState(false);
@@ -157,7 +158,7 @@ export const Reservar = () => {
             return;
         }
 
-        crearReserv.mutate({rut_cliente: user.rut ,fecha: new Date(fechaA) ,hora_inicio: hora_Inicio ,hora_fin: hora_Fin,id_cancha: Number(idCancha),equipamiento: equipamientoO,cantidad_jugadores: Number(cantidad),admin: user.admin});
+        crearReserv.mutate({rut_cliente: rutCliente ,fecha: new Date(fechaA) ,hora_inicio: hora_Inicio ,hora_fin: hora_Fin,id_cancha: Number(idCancha),equipamiento: equipamientoO,cantidad_jugadores: Number(cantidad),admin: user.admin});
         setFecha('');
         setHoraInicio('');
         setHoraFin('');
@@ -239,19 +240,37 @@ export const Reservar = () => {
     return (
     <div> 
         
-        <h2> Bienvenid@ {user?.nombre}, tu saldo actual es: ${user?.saldo} </h2>
-        
-        <h3>Agregar Saldo a tu cuenta: </h3>
-        <form onSubmit={enviarSuma}>
+        <h2> Bienvenid@ {user?.nombre}</h2>
+        {user.admin === false && (
+            <>
+                tu saldo actual es: ${user?.saldo}
+                <h3>Agregar Saldo a tu cuenta: </h3>
+                <form onSubmit={enviarSuma}>
 
-            <input type = "number" placeholder='Ingresa dinero a agregar' value={saldoAgregado} onChange={(e)=> setSaldo(e.target.value)} required/>
+                    <input type = "number" placeholder='Ingresa dinero a agregar' value={saldoAgregado} onChange={(e)=> setSaldo(e.target.value)} required/>
 
-            <button type = "submit"> Agregar</button>
-        </form>
+                    <button type = "submit"> Agregar</button>
+                </form>
 
+            </>
+        )}
 
         <h3>COMPLETE LOS DATOS DE SU RESERVA: </h3>
             <form onSubmit={crearRes}>
+
+                {user.admin === true && (
+                    <>
+                        <p>Rut del cliente</p>
+                        <input type="text" placeholder='Rut' required value={rutCliente} onChange={(e) => setRutCliente(e.target.value)} />
+                    </>
+                )}
+
+                {user.admin === false && (
+                    <>
+                        {setRutCliente(user.rut)}
+                    </>
+                )}
+
                 <p>Fecha, ejemplo: 2023-11-15</p>
                 <input type="date" placeholder='Fecha (ej: 2023-11-15)' required value={fechaA} onChange={(e) => setFecha(e.target.value)} />
                 <p>Hora de inicio de la reserva, ejemplo: 09:30</p>
