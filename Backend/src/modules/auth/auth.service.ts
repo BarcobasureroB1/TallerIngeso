@@ -11,7 +11,7 @@ export class AuthService {
         private readonly jwtService: JwtService, // Inject the JwtService for token generation  
     ) {}
 
-    async register({rut, correo, password}: RegisterDto) {
+    async register({rut, correo, password, nombre}: RegisterDto) {
         const user = await this.usuariosService.findOneByEmail(correo); // Check if the user already exists
         if (user) {
             throw new BadRequestException("El usuario ya existe")// Return a message if the user already exists
@@ -19,7 +19,8 @@ export class AuthService {
         return await this.usuariosService.registrar({
             rut,
             correo,
-            password: await bcryptjs.hash(password, 10) // Hash the password before saving it
+            password: await bcryptjs.hash(password, 10),
+            nombre // Hash the password before saving it
          }); // Return a success message
     }
     async login({rut, password}: LoginDto) {
@@ -31,7 +32,7 @@ export class AuthService {
         if (!isPasswordValid) {
             throw new UnauthorizedException("credenciales invalidas")// Return a message if the password is invalid
         }
-        const payload = { rut: user.rut, correo: user.correo, saldo: user.saldo, admin: user.admin }; // Create a payload with the user's information
+        const payload = { rut: user.rut, correo: user.correo, saldo: user.saldo, admin: user.admin, nombre: user.nombre }; // Create a payload with the user's information
         const token = await this.jwtService.signAsync(payload); // Generate a JWT token with the payload
 
         return token;

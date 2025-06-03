@@ -28,6 +28,7 @@ export class ReservaController {
   findByRut(@Param('rut') rut: string) {
     return this.reservaService.findByRut(rut);
   }
+  
   @Patch('cancelar')
   async cancelarReserva( @Body() dto: CancelarReservaDto) {
     console.log(dto);

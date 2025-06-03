@@ -10,6 +10,7 @@ export class BoletaJugadoresController {
 
   @Post()
   create(@Body() dto: JugadorDto) {
+    console.log('Creando jugador con datos:', dto);
     return this.boletaJugadoresService.createJugador(dto);
   }
 

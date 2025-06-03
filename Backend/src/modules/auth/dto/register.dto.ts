@@ -8,6 +8,8 @@ export class RegisterDto {
 
     @IsEmail()
     correo: string;
+    @IsString   ({message: 'El nombre debe ser un string' })
+    nombre: string;
 
     @Transform(({ value }) => value.trim())
     @IsString   ({message: 'La contraseña debe ser un string' })

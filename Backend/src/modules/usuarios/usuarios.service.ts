@@ -19,14 +19,14 @@ export class UsuariosService {
     });
     return await this.usuarioRepository.save(usuario);
   }
-  async registraradmin(createUsuarioDto: CreateUsuarioDto) {
-    const usuario = this.usuarioRepository.create({
-      ...createUsuarioDto,
-      saldo: 0,
-      admin: true,
-    });
-    return await this.usuarioRepository.save(usuario);
+  async saldo(rut: string) {
+    const usuario = await this.usuarioRepository.findOneBy({ rut });
+    if (!usuario) {
+      throw new Error('Usuario no encontrado');
+    }
+    return { saldo: usuario.saldo };
   }
+  
 
   async findOneByEmail(correo: string) {
     return await this.usuarioRepository.findOneBy({ correo });
@@ -55,15 +55,9 @@ export class UsuariosService {
       throw new Error('Usuario no encontrado');
     }
     usuario.saldo += agregarSaldoDto.saldo;
+
     return await this.usuarioRepository.save(usuario);
   }
-  async makeadmin(rut: string) {
-    const usuario = await this.usuarioRepository.findOneBy({ rut });
-    if (!usuario) {
-      throw new Error('Usuario no encontrado');
-    }
-    usuario.admin = true;
-    return await this.usuarioRepository.save(usuario);
-  }
+ 
   
 }

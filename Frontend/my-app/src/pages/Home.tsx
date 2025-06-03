@@ -72,7 +72,7 @@ export const Home = () => {
                            
                         {reservas.map((reserva: any) => (
                             <li key={reserva.id_reserva}>
-                                Cancha: {reserva.id_cancha} - Fecha: {reserva.fecha} - Hora de inicio: {reserva.hora_inicio} - Hora de salida: {reserva.hora_fin}
+                                Cancha: {reserva.cancha.id_cancha} - Fecha: {reserva.fecha} - Hora de inicio: {reserva.hora_inicio} - Hora de salida: {reserva.hora_fin}
                                 <p>---------------------------------------------------</p>
                             </li>
                         ))}

@@ -13,10 +13,11 @@ export class UsuariosController {
   create(@Body() createUsuarioDto: CreateUsuarioDto) {
     return this.usuariosService.registrar(createUsuarioDto);
   }
-  @Post(':rut')
-  admin(@Param('rut') rut: string) {
-    return this.usuariosService.makeadmin(rut);
+  @Get('saldo/:rut')
+  saldo(@Param('rut') rut: string) {
+    return this.usuariosService.saldo(rut);
   }
+  
 
   @Get()
   findAll() {

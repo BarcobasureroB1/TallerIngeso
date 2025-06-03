@@ -154,16 +154,12 @@ async crearReservaadmin(dto: CreateReservaDto) {
   if (await this.canchaOcupada(dto.id_cancha, dto.fecha, dto.hora_inicio, dto.hora_fin)) {
   throw new Error(`La cancha ya está ocupada entre ${dto.hora_inicio} y ${dto.hora_fin} ese día.`);
 }
-  const costoreserva = cancha.costo;
-  if(cliente.saldo < costoreserva){
-    throw new Error(`Saldo insuficiente. Se requieren $${costoreserva}, pero tienes $${cliente.saldo}`);
-  }
+ 
 
   if (dto.cantidad_jugadores > cancha.capacidad) {
     throw new Error(`La cancha tiene capacidad máxima de ${cancha.capacidad} jugadores. No se pueden reservar ${dto.cantidad_jugadores}.`);
   }
-  cliente.saldo -= costoreserva;
-  await this.usuarioRepository.save(cliente);
+  
 
   const boleta = this.boletaRepository.create()
   await this.boletaRepository.save(boleta);
@@ -203,7 +199,7 @@ async crearReservaadmin(dto: CreateReservaDto) {
 
 async findAll() {
   const reservas = await this.reservaRepository.find({
-    where: { cancelado: false },
+    
     relations: [
     'cliente',
     'cancha',
@@ -238,6 +234,7 @@ async findAll() {
     rut: j.rut_jugador,
     edad: j.edad_jugador,
   })) || [],
+    cancelada: reserva.cancelado,
   }));
 }
 
@@ -450,7 +447,7 @@ async modificarReserva(dto: modificarReservaDto) {
     if (!cancha) {
       throw new Error('Cancha no encontrada');
     }
-    const reserva = await this.reservaRepository.findOneBy({ id_reserva: dto.id_reserva });
+     const reserva = await this.reservaRepository.findOne({ where: {id_reserva : dto.id_reserva}, relations: ['cancha', 'cliente'] })
     if (!reserva) {
       throw new Error('Reserva no encontrada');
     }
