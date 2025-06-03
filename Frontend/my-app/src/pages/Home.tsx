@@ -40,7 +40,7 @@ export const Home = () => {
         return null;
     }
     
-    const canchasUnicas = Array.from(new Set<number>(reservas?.map((reserva: any) => reserva.id_cancha) || [])).sort((a: number, b: number) => a - b);
+    const canchasUnicas = Array.from(new Set<number>(reservas.map((reserva: any) => reserva.id_cancha) || [])).sort((a: number, b: number) => a - b);
 
     const filteredReservas = reservas?.filter((reserva: any) => {
         if (canchaFilter === 'all') return true;
@@ -73,7 +73,7 @@ export const Home = () => {
         <h2>Reservas tomadas:  </h2>
         <h5>Porfavor, revise las reservas vigentes antes de reservar.</h5>
 
-        <div style={{margin: '20px 0'}}>
+        <div>
             <label htmlFor="cancha-filter">Filtrar por cancha: </label>
             <select 
                 id="cancha-filter"
@@ -81,7 +81,7 @@ export const Home = () => {
                 onChange={(e) => setCanchaFilter(e.target.value)}
             >
                 <option value="all">Todas las canchas</option>
-                {canchasUnicas?.map(id_cancha => (
+                {canchasUnicas.map(id_cancha => (
                     <option key={id_cancha} value={id_cancha}>
                         Cancha {id_cancha}
                     </option>
