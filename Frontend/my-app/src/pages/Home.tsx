@@ -90,9 +90,8 @@ export const Home = () => {
         </div>
             
         <div>
-            {cargaReservas ? (
-                <div>Cargando reservas...</div>
-            ) : (
+            {cargaReservas ? (<div>Cargando reservas...</div>) 
+            : (
                 <ul>
                     {filteredReservas?.map((reserva: any) => (
                         <li key={reserva.id}>
