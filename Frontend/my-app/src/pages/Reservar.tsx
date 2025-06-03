@@ -97,6 +97,7 @@ export const Reservar = () => {
       seterrorMSG(error);
     });
 
+    //Asignar rut si no es admin
     useEffect(() => {
         if (user?.admin === false) {
             setRutCliente(user.rut);
