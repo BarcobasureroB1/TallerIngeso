@@ -47,6 +47,7 @@ export class BoletaJugadoresService {
     jugador.apellidos_jugador = dto.apellidos_jugador;
     jugador.rut_jugador = dto.rut_jugador;
     jugador.edad_jugador = dto.edad_jugador;
+    jugador.boleta = boleta;
 
     
 

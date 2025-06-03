@@ -3,7 +3,7 @@ import { CreateReservaDto } from './dto/create-reserva.dto';
 import { UpdateReservaDto } from './dto/update-reserva.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Reserva } from './entities/reserva.entity';
-import { Repository } from 'typeorm';
+import { MoreThanOrEqual, Repository } from 'typeorm';
 import { Cancha } from '../cancha/entities/cancha.entity';
 import { Equipamiento } from '../equipamento/entities/equipamento.entity';
 import { Usuario } from '../usuarios/entities/usuario.entity';
@@ -111,6 +111,7 @@ export class ReservaService {
     hora_fin: dto.hora_fin,
     cancha,
     equipamiento: dto.equipamiento,
+    boleta: boleta,
     boletaEquipamiento: boleta,
     cantidad_jugadores: dto.cantidad_jugadores,
   });
@@ -234,10 +235,15 @@ async findAll() {
 }
 
   async findByRut(rut: string) {
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0); // Eliminamos hora para comparar solo fechas
+    const fechaString = hoy.toISOString().split('T')[0];
+
   const reservas = await this.reservaRepository.find({
     where: {
       cancelado: false,
-      cliente: { rut }, // filtrando por rut del cliente
+      cliente: { rut },
+      fecha: MoreThanOrEqual(fechaString),
     },
     relations: [
       'cliente',
@@ -245,7 +251,11 @@ async findAll() {
       'boletaEquipamiento',
       'boletaEquipamiento.relaciones',
       'boletaEquipamiento.relaciones.equipamiento',
+      'boleta.jugadores', 
     ],
+    order: {
+      fecha: 'ASC', 
+    },
   });
 
   return reservas.map((reserva) => ({
@@ -261,10 +271,16 @@ async findAll() {
       id_cancha: reserva.cancha.id_cancha,
       costo: reserva.cancha.costo,
     },
-    equipamientoAsignado: reserva.boletaEquipamiento?.relaciones?.map(be => ({
-      nombre: be.equipamiento.nombre,
-      cantidad: be.cantidad,
+    equipamientoAsignado: reserva.boletaEquipamiento?.relaciones?.map((rel) => ({
+      nombre: rel.equipamiento?.nombre ?? 'Desconocido',
+      cantidad: rel.cantidad,
     })) || [],
+    jugadores: reserva.boleta?.jugadores?.map(j => ({
+    nombre: j.nombres_jugador,
+    apellidos: j.apellidos_jugador,
+    rut: j.rut_jugador,
+    edad: j.edad_jugador,
+  })) || [],
   }));
 }
 

@@ -39,6 +39,9 @@ export class Reserva {
   boletaEquipamiento: Boleta | null;
   @Column({ type: 'integer', default: 2 })
   cantidad_jugadores: number;
+  @ManyToOne(() => Boleta, { nullable: true })
+  @JoinColumn({ name: 'numero_boleta' }) // este campo debe existir en la tabla Reserva
+  boleta: Boleta | null;
 
   @Column({ default: false })
   cancelado: boolean;
