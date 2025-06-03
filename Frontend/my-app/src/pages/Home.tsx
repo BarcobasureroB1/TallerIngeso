@@ -92,14 +92,20 @@ export const Home = () => {
         <div>
             {cargaReservas ? (<div>Cargando reservas...</div>) 
             : (
-                <ul>
-                    {filteredReservas?.map((reserva: any) => (
-                        <li key={reserva.id}>
-                            Cancha: {reserva.id_cancha} - Fecha: {reserva.fecha} - Hora de inicio: {reserva.hora_inicio} - Hora de salida: {reserva.hora_fin}
-                            <p>---------------------------------------------------</p>
-                        </li>
-                    ))}
-                </ul>
+                <>
+                {filteredReservas?.length > 0 ?(
+                    <ul>
+                           
+                        {filteredReservas.map((reserva: any) => (
+                            <li key={reserva.id}>
+                                Cancha: {reserva.id_cancha} - Fecha: {reserva.fecha} - Hora de inicio: {reserva.hora_inicio} - Hora de salida: {reserva.hora_fin}
+                                <p>---------------------------------------------------</p>
+                            </li>
+                        ))}
+                    </ul>
+                ):(<>No hay reservas</>)}
+
+                </>
             )}
         </div>
 
