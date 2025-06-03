@@ -88,7 +88,7 @@ export function useEliminarReserva(){
             await api.patch('api/v1/reserva/cancelar', eliminacion)
         },
         onSuccess: () => {
-            clienteQuery.invalidateQueries({queryKey:['reserva']});
+            clienteQuery.invalidateQueries({queryKey:['reserva/cancelar']});
         }                            
     });
 
