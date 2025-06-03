@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useUserProfile } from '../hooks/useUserProfile';
 import {useNavigate} from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
-import { useReservasVigentes } from '../hooks/useReservas';
+import { useReservasVigentes, useReservasGenerales } from '../hooks/useReservas';
 
 export const Home = () => {
     console.log("Home");
@@ -10,7 +10,7 @@ export const Home = () => {
     const navigate = useNavigate();
     const { data: user, isLoading: cargauser, isError} = useUserProfile();
     const fecha = new Date();
-    const {data: reservas, isLoading: cargaReservas} = useReservasVigentes(fecha);
+    const {data: reservas, isLoading: cargaReservas} = useReservasGenerales();
     //filtro para canchas         
 
     if(!token)
