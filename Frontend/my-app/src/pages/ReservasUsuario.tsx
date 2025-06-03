@@ -153,7 +153,7 @@ export const Reserva = () =>
                             
                             <div>
                                     <button 
-                                        onClick={() => eliminarReser.mutate(p.id_reserva, user.admin)}
+                                        onClick={() => eliminarReser.mutate({id_reserva: p.id_reserva,admin: user.admin})}
                                         style={{ marginRight: '10px', padding: '5px 10px' }}
                                     >
                                         Cancelar Reserva

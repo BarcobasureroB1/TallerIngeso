@@ -18,6 +18,11 @@ export class ReservaController {
   findAll() {
     return this.reservaService.findAll();
   }
+  @Get('vigentes')
+  findvigentes() {
+    return this.reservaService.findvigentes();
+  }
+
 
   @Get(':rut')
   findByRut(@Param('rut') rut: string) {

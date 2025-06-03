@@ -241,6 +241,52 @@ async findAll() {
   }));
 }
 
+async findvigentes() {
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0); // Eliminamos hora para comparar solo fechas
+    const fechaString = hoy.toISOString().split('T')[0];
+  const reservas = await this.reservaRepository.find({
+    where: { cancelado: false,
+      fecha: MoreThanOrEqual(fechaString),
+     },
+    relations: [
+    'cliente',
+    'cancha',
+    'boletaEquipamiento',
+    'boletaEquipamiento.relaciones',
+    'boletaEquipamiento.relaciones.equipamiento',
+    'boleta.jugadores',
+    ],
+    order: { fecha: 'ASC' },
+  });
+
+  return reservas.map((reserva) => ({
+    id_reserva: reserva.id_reserva,
+    fecha: reserva.fecha,
+    hora_inicio: reserva.hora_inicio,
+    hora_fin: reserva.hora_fin,
+    cliente: {
+      rut: reserva.cliente.rut,
+      correo: reserva.cliente.correo,
+    },
+    cancha: {
+      id_cancha: reserva.cancha.id_cancha,
+      costo: reserva.cancha.costo,
+    },
+    equipamientoAsignado: reserva.boletaEquipamiento?.relaciones?.map(be => ({
+      nombre: be.equipamiento.nombre,
+      cantidad: be.cantidad,
+    })) || [],
+    jugadores: reserva.boleta?.jugadores?.map(j => ({
+    nombre: j.nombres_jugador,
+    apellidos: j.apellidos_jugador,
+    rut: j.rut_jugador,
+    edad: j.edad_jugador,
+  })) || [],
+  }));
+
+}
+
   async findByRut(rut: string) {
   const hoy = new Date();
   hoy.setHours(0, 0, 0, 0); // Eliminamos hora para comparar solo fechas

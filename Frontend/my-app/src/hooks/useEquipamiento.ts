@@ -22,11 +22,11 @@ export function useCrearEquipamiento(){
     const clienteQuery = useQueryClient();
     return useMutation({
         mutationFn: async ({nombre, stock, tipo, costo}:EquipData)  => {
-            const respuesta = await api.post('api/v1/cancha',{nombre, stock, tipo, costo});
+            const respuesta = await api.post('api/v1/equipamento',{nombre, stock, tipo, costo});
             return respuesta.data
         },
         onSuccess: () => {
-            clienteQuery.invalidateQueries({queryKey:['cancha']});
+            clienteQuery.invalidateQueries({queryKey:['equipamento']});
         }                           
     });
 }
