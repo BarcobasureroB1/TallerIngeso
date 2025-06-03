@@ -28,11 +28,11 @@ interface ReservarResponse
 }
 
 
-export function useReservas(rutUser: string, fecha: Date) {     //pa listar las reservas
+export function useReservas(rutUser: string) {     //pa listar las reservas
     return useQuery({
-        queryKey: ['reserva', rutUser, fecha],
+        queryKey: ['reserva', rutUser],
         queryFn: async () => {
-            const respuesta = await api.get('api/v1/reserva',{params:{rut_cliente: rutUser, fecha: fecha}});
+            const respuesta = await api.get('api/v1/reserva',{params:{rut_cliente: rutUser}});
             return respuesta.data;
         }
     });

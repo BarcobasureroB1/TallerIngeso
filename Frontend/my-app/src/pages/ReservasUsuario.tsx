@@ -15,8 +15,7 @@ export const Reserva = () =>
     const modificarFechaHora = useModificarFechaHora();
     const navigate = useNavigate();
     const {data: user, isLoading: cargauser, isError} = useUserProfile();
-    const fechaActual = new Date();
-    const {data: reservas,isLoading: cargaReserva} = useReservas(user?.rut, fechaActual);
+    const {data: reservas,isLoading: cargaReserva} = useReservas(user?.rut);
     const { data: canchas, isLoading: cargaCanchas } = useCanchas();
 
     const [modificandoCanchaId, setModificandoCanchaId] = useState<number | null>(null);
