@@ -48,11 +48,11 @@ export function useReservasGenerales() {     //pa listar TODAS las reservas
     });
 }
 
-export function useReservasVigentes(fechaActual: Date) {     //pa listar las reservas que estén después de la fecha actual.
+export function useReservasVigentes() {     //pa listar las reservas que estén después de la fecha actual.
     return useQuery({
-        queryKey: ['reserva', fechaActual],
+        queryKey: ['reserva'],
         queryFn: async () => {
-            const respuesta = await api.get('api/v1/reserva',{params:{fecha: fechaActual}});
+            const respuesta = await api.get('api/v1/reserva/vigentes');
             return respuesta.data;
         }
     });

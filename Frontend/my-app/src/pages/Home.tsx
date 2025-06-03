@@ -9,8 +9,7 @@ export const Home = () => {
     const {token, setToken} = useAuth();
     const navigate = useNavigate();
     const { data: user, isLoading: cargauser, isError} = useUserProfile();
-    const fecha = new Date();
-    const {data: reservas, isLoading: cargaReservas} = useReservasVigentes(fecha);
+    const {data: reservas, isLoading: cargaReservas} = useReservasVigentes();
     //filtro para canchas 
     const [canchaFilter, setCanchaFilter] = useState<string>('all');        
 
