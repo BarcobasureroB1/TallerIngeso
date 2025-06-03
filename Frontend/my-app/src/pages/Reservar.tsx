@@ -3,7 +3,7 @@ import { useUserProfile } from '../hooks/useUserProfile';
 import {useNavigate} from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
 import { useCrearReserva } from '../hooks/useReservas';
-import {useAgregarSaldo} from '../hooks/useUsuarios';
+import {useAgregarSaldo, useSaldoUsuario} from '../hooks/useUsuarios';
 import { useCanchas } from '../hooks/useCanchas';
 import { useEquipamiento } from '../hooks/useEquipamiento';
 import { useCrearBoleta } from '../hooks/useBoletas';
@@ -54,6 +54,7 @@ export const Reservar = () => {
     //añadir a Saldo
     const [saldoAgregado,setSaldo] = useState('');
     const agregarMonto = useAgregarSaldo();
+    const {data: pedirSaldo, isLoading: isLoadingMonto} = useSaldoUsuario(user.rut);
 
     //mostrar canchas
     const {data: canchas,isLoading: cargaCanchas} = useCanchas();
@@ -243,7 +244,7 @@ export const Reservar = () => {
         <h2> Bienvenid@ {user?.nombre}</h2>
         {user.admin === false && (
             <>
-                tu saldo actual es: ${user?.saldo}
+                tu saldo actual es: ${pedirSaldo.saldo}
                 <h3>Agregar Saldo a tu cuenta: </h3>
                 <form onSubmit={enviarSuma}>
 

@@ -16,3 +16,13 @@ export function useAgregarSaldo(){
     });
 
 }
+
+export function useSaldoUsuario(rutUser: string) {     //pa listar las reservas
+    return useQuery({
+        queryKey: ['saldo', rutUser],
+        queryFn: async () => {
+            const respuesta = await api.get(`api/v1/usuarios/saldo/${rutUser}`);
+            return respuesta.data;
+        }
+    });
+}
