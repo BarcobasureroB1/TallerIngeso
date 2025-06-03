@@ -120,7 +120,7 @@ export const Reserva = () =>
         <>
             <h2>Reservas pedidas: </h2>
             {reservas?.length > 0 ? (
-                <ul style={{ listStyle: 'none', padding: 0 }}>
+                <ul>
                     {reservas.map((p: any) => (
                         <li key = {p.id_reserva} style={{ marginBottom: '20px', borderBottom: '1px solid #ccc', paddingBottom: '20px' }}>
                             <p><strong>Rut del cliente:</strong> {p.cliente.rut}</p>
@@ -143,15 +143,15 @@ export const Reserva = () =>
                             {p.jugadores?.length > 0 ? (
                                 <ul>
                                     {p.jugadores.map((j: any) => (
-                                        <li key = {j.nombres_jugador}>
-                                            {j.nombres_jugador} {j.apellidos_jugador} (Rut: {j.rut_jugador}, Edad: {j.edad_jugador})
+                                        <li key = {j.nombre}>
+                                            {j.nombre} {j.apellidos} (Rut: {j.rut}, Edad: {j.edad})
                                         </li>
                                     ))}
                                 </ul>
                             ) : (<p>No hay jugadores.</p>)
                             }
                             
-                            <div style={{ marginTop: '10px' }}>
+                            <div>
                                     <button 
                                         onClick={() => eliminarReser.mutate(p.id_reserva, user.admin)}
                                         style={{ marginRight: '10px', padding: '5px 10px' }}
