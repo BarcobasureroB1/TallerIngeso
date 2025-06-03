@@ -50,9 +50,9 @@ export const Canchas = () => {
                 <ul>
                     {canchas.map((c: any) => (
                         <li key = {c.id_cancha}>
-                            Número: {c.id_cancha} 
-                            Capacidad: {c.capacidad}
-                            Costo: {c.costo}
+                            Número: {c.id_cancha} -  
+                            Capacidad: {c.capacidad} - 
+                            Costo: {c.costo} 
                              <p>------------</p>
                         </li>
                     ))}
