@@ -74,35 +74,35 @@ export const Home = () => {
         <h5>Porfavor, revise las reservas vigentes antes de reservar.</h5>
 
         <div style={{margin: '20px 0'}}>
-                <label htmlFor="cancha-filter">Filtrar por cancha: </label>
-                <select 
-                    id="cancha-filter"
-                    value={canchaFilter}
-                    onChange={(e) => setCanchaFilter(e.target.value)}
-                >
-                    <option value="all">Todas las canchas</option>
-                    {canchasUnicas?.map(id_cancha => (
-                        <option key={id_cancha} value={id_cancha}>
-                            Cancha {id_cancha}
-                        </option>
-                    ))}
-                </select>
-            </div>
+            <label htmlFor="cancha-filter">Filtrar por cancha: </label>
+            <select 
+                id="cancha-filter"
+                value={canchaFilter}
+                onChange={(e) => setCanchaFilter(e.target.value)}
+            >
+                <option value="all">Todas las canchas</option>
+                {canchasUnicas?.map(id_cancha => (
+                    <option key={id_cancha} value={id_cancha}>
+                        Cancha {id_cancha}
+                    </option>
+                ))}
+            </select>
+        </div>
             
-            <div>
-                {cargaReservas ? (
-                    <div>Cargando reservas...</div>
-                ) : (
-                    <ul>
-                        {filteredReservas?.map((reserva: any) => (
-                            <li key={reserva.id}>
-                                Cancha: {reserva.id_cancha} - Fecha: {reserva.fecha} - Hora de inicio: {reserva.hora_inicio} - Hora de salida: {reserva.hora_fin}
-                                <p>---------------------------------------------------</p>
-                            </li>
-                        ))}
-                    </ul>
-                )}
-            </div>
+        <div>
+            {cargaReservas ? (
+                <div>Cargando reservas...</div>
+            ) : (
+                <ul>
+                    {filteredReservas?.map((reserva: any) => (
+                        <li key={reserva.id}>
+                            Cancha: {reserva.id_cancha} - Fecha: {reserva.fecha} - Hora de inicio: {reserva.hora_inicio} - Hora de salida: {reserva.hora_fin}
+                            <p>---------------------------------------------------</p>
+                        </li>
+                    ))}
+                </ul>
+            )}
+        </div>
 
     </div>
     );
