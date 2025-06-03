@@ -54,10 +54,10 @@ export const Equipamientos = () => {
                     <ul>
                         {equipamientos.map((e: any) => (
                             <li key = {e.nombre}>
-                                Nombre: {e.nombre} 
-                                Stock: {e.stock}
-                                Tipo: {e.tipo}
-                                Costo: {e.costo}
+                                Nombre: {e.nombre} - 
+                                Stock: {e.stock} - 
+                                Tipo: {e.tipo} - 
+                                Costo: {e.costo} - 
                                  <p>------------</p>
                             </li>
                         ))}
