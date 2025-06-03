@@ -1,4 +1,4 @@
-import React, {SyntheticEvent, useState} from 'react'
+import React, {SyntheticEvent, useEffect, useState} from 'react'
 import { useUserProfile } from '../hooks/useUserProfile';
 import {useNavigate} from "react-router-dom";
 import { useAuth } from '../context/AuthContext';
@@ -96,6 +96,12 @@ export const Reservar = () => {
     (error) => {
       seterrorMSG(error);
     });
+
+    useEffect(() => {
+        if (user?.admin === false) {
+            setRutCliente(user.rut);
+        }
+    }, [user]);
 
     if(!token)
     {
@@ -244,6 +250,16 @@ export const Reservar = () => {
         <h2> Bienvenid@ {user?.nombre}</h2>
         {user.admin === false && (
             <>
+                {isLoadingMonto? (
+                <p>Cargando Saldo total...</p>
+                ): (
+                <>
+                    <h2> tu saldo es: </h2>
+                        {pedirSaldo.saldo}
+                
+                </>
+                )}
+
                 <h3>Agregar Saldo a tu cuenta: </h3>
                 <form onSubmit={enviarSuma}>
 
@@ -262,12 +278,6 @@ export const Reservar = () => {
                     <>
                         <p>Rut del cliente</p>
                         <input type="text" placeholder='Rut' required value={rutCliente} onChange={(e) => setRutCliente(e.target.value)} />
-                    </>
-                )}
-
-                {user.admin === false && (
-                    <>
-                        {setRutCliente(user.rut)}
                     </>
                 )}
 
