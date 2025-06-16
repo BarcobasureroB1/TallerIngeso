@@ -39,6 +39,7 @@ export const Reservar = () => {
     const [equipamientoO,setEquipamiento] = useState(false);
     const [cantidad,setCantidadJugadores] = useState('');
     const [rutCliente,setRutCliente] = useState('');
+    const [rutAdmin,setRutAdmin] = useState('');
 
     // Estados para jugadores
     const [mostrarFormJugador, setMostrarFormJugador] = useState(false);
@@ -166,12 +167,13 @@ export const Reservar = () => {
             return;
         }
 
-        crearReserv.mutate({rut_cliente: rutCliente ,fecha: new Date(fechaA) ,hora_inicio: hora_Inicio ,hora_fin: hora_Fin,id_cancha: Number(idCancha),equipamiento: equipamientoO,cantidad_jugadores: Number(cantidad),admin: user.admin});
+        crearReserv.mutate({rut_cliente: rutCliente ,fecha: new Date(fechaA) ,hora_inicio: hora_Inicio ,hora_fin: hora_Fin,id_cancha: Number(idCancha),equipamiento: equipamientoO,cantidad_jugadores: Number(cantidad), admin: user.admin, rut_admin: rutAdmin});
         setFecha('');
         setHoraInicio('');
         setHoraFin('');
         setIDCancha('');
         setCantidadJugadores('');
+        setRutAdmin('');
     };
     
 
@@ -279,6 +281,13 @@ export const Reservar = () => {
                     <>
                         <p>Rut del cliente</p>
                         <input type="text" placeholder='Rut' required value={rutCliente} onChange={(e) => setRutCliente(e.target.value)} />
+                        {setRutAdmin(user.rut)}
+                    </>
+                )}
+
+                {user.admin === false && (
+                    <>  
+                        {setRutCliente(user.rut)}
                     </>
                 )}
 

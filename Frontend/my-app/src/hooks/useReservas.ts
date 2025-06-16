@@ -13,6 +13,7 @@ interface ReservaData
     equipamiento: boolean;
     cantidad_jugadores: number;
     admin: boolean;
+    rut_admin: string;
 }
 
 interface CancelarResponse
@@ -61,8 +62,8 @@ export function useReservasVigentes() {     //pa listar las reservas que estén 
 export function useCrearReserva (onSuccess: (data: ReservarResponse) => void, onFail:(error:string)=>void){ 
     const clienteQuery = useQueryClient();
     return useMutation<ReservarResponse,AxiosError,ReservaData>({
-        mutationFn: async ({rut_cliente, fecha, hora_inicio, hora_fin, id_cancha,equipamiento,cantidad_jugadores,admin}:ReservaData): Promise<ReservarResponse>  => {
-            const respuesta = await api.post('api/v1/reserva',{rut_cliente, fecha, hora_inicio, hora_fin, id_cancha, equipamiento,cantidad_jugadores,admin});
+        mutationFn: async ({rut_cliente, fecha, hora_inicio, hora_fin, id_cancha,equipamiento,cantidad_jugadores,admin, rut_admin}:ReservaData): Promise<ReservarResponse>  => {
+            const respuesta = await api.post('api/v1/reserva',{rut_cliente, fecha, hora_inicio, hora_fin, id_cancha, equipamiento,cantidad_jugadores,admin, rut_admin});
 
             if (!respuesta.data || !respuesta.data.id_boleta) {
                 throw new Error('La respuesta del servidor no contiene id_boleta');
