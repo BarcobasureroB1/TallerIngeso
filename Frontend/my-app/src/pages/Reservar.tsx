@@ -105,6 +105,13 @@ export const Reservar = () => {
         }
     }, [user]);
 
+    //Asignar rut si es admin
+    useEffect(() => {
+        if (user?.admin === true) {
+            setRutAdmin(user.rut);
+        }
+    }, [user]);
+
     if(!token)
     {
         navigate('/Login');
@@ -281,13 +288,6 @@ export const Reservar = () => {
                     <>
                         <p>Rut del cliente</p>
                         <input type="text" placeholder='Rut' required value={rutCliente} onChange={(e) => setRutCliente(e.target.value)} />
-                        {setRutAdmin(user.rut)}
-                    </>
-                )}
-
-                {user.admin === false && (
-                    <>  
-                        {setRutCliente(user.rut)}
                     </>
                 )}
 
