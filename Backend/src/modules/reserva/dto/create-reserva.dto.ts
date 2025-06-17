@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsDateString, IsNumber, IsString, ValidateNested } from 'class-validator';
+import { IsArray, IsBoolean, IsDateString, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { JugadorDto } from '../../boleta-jugadores/dto/jugador.dto';
 import { Type } from 'class-transformer';
 
@@ -26,6 +26,10 @@ export class CreateReservaDto {
 
   @IsBoolean()
   admin: boolean;
+
+  @IsOptional()
+  @IsString()
+  rut_admin?: string;
 
   
   

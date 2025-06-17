@@ -369,16 +369,17 @@ async findvigentes() {
 // Método para crear una reserva, diferenciando entre cliente y administrador
 async seleccrearreserva(dto: CreateReservaDto) {
   const cliente = await this.usuarioRepository.findOneBy({ rut: dto.rut_cliente });
+  if( dto.rut_admin) {
+    console.log(dto.rut_admin);
+    return await this.crearReservaadmin(dto);
+  }
   if (!cliente) {
     throw new Error('Cliente no encontrado');
   }
-  const admin = cliente.admin;
-  if (!admin) {
-    
-   return await this.crearReserva(dto);
-  }
+  
   else {
-  return await this.crearReservaadmin(dto);
+    return await this.crearReserva(dto);
+  //return await this.crearReservaadmin(dto);
   }
 
 
